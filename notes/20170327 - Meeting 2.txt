@@ -1,0 +1,12 @@
+ohne ATC
+
+ObjectType = RWK
+RelationType = Unfall vorher vs. nachher
+
+TrafficMessage alle Felder bis auf entry_time and update_time gleich => Dupliacted => nur eine TrafficMessage verweisen
+
+SituationEvolutionType = Groupierung von allen StituationStateTypes - zum Schluss
+	- 
+TransitionType = Transiation between SituationTypes - Sequence z.b {FLT} -> {OWW}
+
+Vom Type(phr) ausgehende Ausgabe.
