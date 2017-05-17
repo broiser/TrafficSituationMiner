@@ -6,6 +6,7 @@ import static java.util.stream.Collectors.toList;
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -75,8 +76,8 @@ public class SituationEvolutionService implements Serializable {
 
 	private List<AsfinagTrafficmessage> filterDupliatedAsfinagTrafficmessage(
 			List<AsfinagTrafficmessage> trafficmessages) {
-		return trafficmessages.stream().map(AsfinagTrafficmessageWrapper::new).distinct()
-				.map(AsfinagTrafficmessageWrapper::unwrap).collect(Collectors.toList());
+		Stream<AsfinagTrafficmessageWrapper> stream = trafficmessages.stream().map(AsfinagTrafficmessageWrapper::new);
+		return stream.distinct().map(AsfinagTrafficmessageWrapper::unwrap).collect(Collectors.toList());
 	}
 
 	private final class AsfinagTrafficmessageWrapper {
@@ -94,14 +95,19 @@ public class SituationEvolutionService implements Serializable {
 			if (!(other instanceof AsfinagTrafficmessageWrapper)) {
 				return false;
 			}
-			AsfinagTrafficmessage otherTrafficmessage = ((AsfinagTrafficmessageWrapper) other).trafficmessage;
-			return trafficmessage.getBegintime().equals(otherTrafficmessage.getBegintime())
+			return equals(((AsfinagTrafficmessageWrapper) other).trafficmessage);
+		}
+
+		private boolean equals(AsfinagTrafficmessage otherTrafficmessage) {
+			return trafficmessage.getSituation_id().equals(otherTrafficmessage.getSituation_id())
 					&& trafficmessage.getVmis_id().equals(otherTrafficmessage.getVmis_id())
+					&& trafficmessage.getBegintime().equals(otherTrafficmessage.getBegintime())
 					&& trafficmessage.getDatex_phr().equals(otherTrafficmessage.getDatex_phr());
 		}
 
 		public int hashCode() {
-			return trafficmessage.hashCode();
+			return trafficmessage.getSituation_id().hashCode() + trafficmessage.getVmis_id().hashCode()
+					+ trafficmessage.getBeginmeter().hashCode() + trafficmessage.getDatex_phr().hashCode();
 		}
 	}
 }

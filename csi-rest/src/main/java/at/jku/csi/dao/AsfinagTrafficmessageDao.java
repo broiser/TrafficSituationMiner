@@ -1,17 +1,12 @@
 package at.jku.csi.dao;
 
-import static org.hibernate.criterion.Projections.groupProperty;
-import static org.hibernate.criterion.Restrictions.eq;
-
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Tuple;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-
-import org.hibernate.Criteria;
-import org.hibernate.ScrollableResults;
 
 import at.jku.csi.cdi.Dao;
 import at.jku.tk.csi.server.datalayer.source.dynamic_.asfinag.AsfinagTrafficmessage;
@@ -22,29 +17,30 @@ public class AsfinagTrafficmessageDao extends AbstractDao<AsfinagTrafficmessage>
 	private static final String BEGINTIME = "begintime";
 	private static final String SITUATION_ID = "situation_id";
 	private static final String MESSAGETEXT = "messagetext";
-	private static final String VMS_ID = "vms_id";
+	private static final String VMIS_ID = "vmis_id";
 
-	public ScrollableResults findScrollableSituationIds(String phr) {
-		Criteria criteria = createCriteria(AsfinagTrafficmessage.class);
-		criteria = criteria.add(eq(DATEX_PHR, phr));
-		criteria = criteria.setProjection(groupProperty(SITUATION_ID));
-		return getScrollableResults(criteria);
+	public List<Integer> findSituationIds(Date from, Date to) {
+		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
+		CriteriaQuery<Integer> query = builder.createQuery(Integer.class);
+		Root<AsfinagTrafficmessage> root = query.from(AsfinagTrafficmessage.class);
+		query.where(builder.between(root.get(BEGINTIME), from, to));
+		return getResultList(query.distinct(true).select(root.get(SITUATION_ID)));
 	}
 
-	public List<AsfinagTrafficmessage> findAsfinagTrafficsByVmsId(int vmsId) {
+	public List<AsfinagTrafficmessage> findAsfinagTrafficsByVmisId(int vmisId) {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<AsfinagTrafficmessage> query = builder.createQuery(AsfinagTrafficmessage.class);
 		Root<AsfinagTrafficmessage> root = query.from(AsfinagTrafficmessage.class);
-		 query.where(builder.equal(root.get(VMS_ID), vmsId));
 		query.orderBy(builder.asc(root.get(BEGINTIME)), builder.asc(root.get(DATEX_PHR)));
-		return getResultList(query);
+		return getResultList(query.where(builder.equal(root.get(VMIS_ID), vmisId)));
 	}
 
 	public List<AsfinagTrafficmessage> findAsfinagTrafficsBySituationId(int situationId) {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<AsfinagTrafficmessage> query = builder.createQuery(AsfinagTrafficmessage.class);
 		Root<AsfinagTrafficmessage> root = query.from(AsfinagTrafficmessage.class);
-		query.where(builder.equal(root.get(SITUATION_ID), situationId));
+		query.where(builder.equal(root.get(SITUATION_ID), situationId), builder.isNotNull(root.get(BEGINTIME)),
+				builder.isNotNull(root.get(DATEX_PHR)), builder.isNotNull(root.get(VMIS_ID)));
 		query.orderBy(builder.asc(root.get(BEGINTIME)), builder.asc(root.get(DATEX_PHR)));
 		return getResultList(query);
 	}

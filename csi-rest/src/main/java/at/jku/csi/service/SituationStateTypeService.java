@@ -15,8 +15,6 @@ import at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.Situation
 public class SituationStateTypeService implements Serializable {
 
 	@Inject
-	private ObjectTypeService objectTypeService;
-	@Inject
 	private SituationStateTypeDao situationStateTypeDao;
 
 	public SituationStateType findSituationStateType(String name) {
