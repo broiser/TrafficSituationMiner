@@ -26,7 +26,7 @@ public class SituationEvolutionService implements Serializable {
 	@Inject
 	private SituationEvolutionDao situationEvolutionDao;
 	@Inject
-	private StateDurationCalculator stateDurationCalculator;
+	private DurationCalculator durationCalculator;
 	@Inject
 	private DiscreteStateInstanceService discreteStateInstanceService;
 	@Inject
@@ -34,6 +34,10 @@ public class SituationEvolutionService implements Serializable {
 	@Inject
 	private StateInstanceComparator stateInstanceComparator;
 
+	public SituationEvolution findSituationEvoution(long situationId) {
+		return situationEvolutionDao.findSituationEvolution(situationId);
+	}
+	
 	@Transactional
 	public SituationEvolution createSituationEvolution(int situationId) {
 		List<AsfinagTrafficmessage> trafficmessage = findAsfinagTrafficmessagesBySituationId(situationId);
@@ -46,7 +50,7 @@ public class SituationEvolutionService implements Serializable {
 		situationEvolution.setStateInstance(stateInstances);
 		situationEvolution.setDiscreteStateInstance(discreteStateInstances);
 		situationEvolution.setEvoSteps(stateInstances.size());
-		situationEvolution.setEvolutionSequence(buildEvolutionSequence(discreteStateInstances));
+		situationEvolution.setEvolutionSequence(buildEvolutionSequence(stateInstances));
 		situationEvolution.setMajorEvoSteps(discreteStateInstances.size());
 		situationEvolution.setTotalDuration(calculateTotalDuration(stateInstances));
 		return situationEvolutionDao.save(situationEvolution);
@@ -57,7 +61,7 @@ public class SituationEvolutionService implements Serializable {
 				.sorted(stateInstanceComparator).collect(toList());
 	}
 
-	private String buildEvolutionSequence(List<DiscreteStateInstance> stateInstances) {
+	private String buildEvolutionSequence(List<StateInstance> stateInstances) {
 		return stateInstances.stream().map(instance -> instance.getName()).collect(joining(SEQUENCE_DELIMITER));
 	}
 
@@ -66,7 +70,7 @@ public class SituationEvolutionService implements Serializable {
 			return 0;
 		}
 		StateInstance lastStateInstance = stateInstances.get(stateInstances.size() - 1);
-		return stateDurationCalculator.calculateDuration(stateInstances.get(0), lastStateInstance);
+		return durationCalculator.calculateDuration(stateInstances.get(0), lastStateInstance);
 	}
 
 	private List<AsfinagTrafficmessage> findAsfinagTrafficmessagesBySituationId(int situationId) {
@@ -110,4 +114,6 @@ public class SituationEvolutionService implements Serializable {
 					+ trafficmessage.getBeginmeter().hashCode() + trafficmessage.getDatex_phr().hashCode();
 		}
 	}
+
+	
 }

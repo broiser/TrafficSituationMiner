@@ -1,6 +1,9 @@
 package at.jku.csi.rest;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.Date;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -24,9 +27,9 @@ public class SituationEvolutionRestService implements RestService {
 	@Inject
 	private DateMarshaller dateMarshaller;
 	@Inject
-	private AsfinagTrafficmessageService asfinagTrafficmessageService;
-	@Inject
 	private SituationEvolutionService situationEvolutionService;
+	@Inject
+	private AsfinagTrafficmessageService asfinagTrafficmessageService;
 
 	@GET
 	@Path("{situationId}")
@@ -36,14 +39,16 @@ public class SituationEvolutionRestService implements RestService {
 
 	@GET
 	@Path("{fromDate}/{toDate}")
-	public void getSituationEvolutions(@PathParam("fromDate") String fromDate, @PathParam("toDate") String toDate)
+	public Response getSituationEvolutions(@PathParam("fromDate") String fromDate, @PathParam("toDate") String toDate)
 			throws Exception {
 		Date from = dateMarshaller.unmarshal(fromDate);
 		Date to = dateMarshaller.unmarshal(toDate);
-		for (int situationId : asfinagTrafficmessageService.findSituationIds(from, to)) {
-			System.out.println(situationId);
-			createSituationEvolution(situationId);
-		}
+		return Response.ok(createSituationEvolutions(from, to)).build();
+	}
+
+	private List<SituationEvolution> createSituationEvolutions(Date from, Date to) {
+		List<Integer> situationIds = asfinagTrafficmessageService.findSituationIds(from, to);
+		return situationIds.stream().map(situationId -> createSituationEvolution(situationId)).collect(toList());
 	}
 
 	private SituationEvolution createSituationEvolution(int situationId) {

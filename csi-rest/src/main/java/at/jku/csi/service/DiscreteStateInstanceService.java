@@ -21,13 +21,13 @@ import at.jku.tk.csi.server.datalayer.source.dynamic_.asfinag.AsfinagTrafficmess
 public class DiscreteStateInstanceService implements Serializable {
 
 	@Inject
+	private SituationStateTypeService situationStateTypeService;
+	@Inject
 	private DiscreteStateInstanceDao discreteStateInstanceDao;
 	@Inject
 	private StateInstanceService stateInstanceService;
 	@Inject
-	private StateDurationCalculator stateDurationCalculator;
-	@Inject
-	private SituationStateTypeService situationStateTypeService;
+	private DurationCalculator durationCalculator;
 
 	@Transactional
 	public List<DiscreteStateInstance> createDiscreteStateInstances(List<AsfinagTrafficmessage> trafficmessages) {
@@ -60,7 +60,7 @@ public class DiscreteStateInstanceService implements Serializable {
 	}
 
 	private double calcuateDuration(StateInstance firstStateInstance, StateInstance lastStateInstance) {
-		return stateDurationCalculator.calculateDuration(firstStateInstance, lastStateInstance);
+		return durationCalculator.calculateDuration(firstStateInstance, lastStateInstance);
 	}
 
 	private SituationStateType findOrCreateSituationStateType(String name) {

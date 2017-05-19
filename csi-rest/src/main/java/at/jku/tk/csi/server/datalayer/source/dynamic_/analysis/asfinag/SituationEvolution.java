@@ -13,6 +13,10 @@
  */
 package at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag;
 
+
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -48,7 +52,7 @@ public class SituationEvolution extends BaseEntity {
 	@JoinColumns({ @JoinColumn(name = "SituationEvolutionID", nullable = true) })
 	@org.hibernate.annotations.IndexColumn(name = "SituationEvolutionIndex")
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)
-	private java.util.List<StateInstance> stateInstance = new java.util.ArrayList<>();
+	private List<StateInstance> stateInstance = new ArrayList<>();
 
 	@OneToMany(targetEntity = at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.DiscreteStateInstance.class)
 	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE,
@@ -56,7 +60,7 @@ public class SituationEvolution extends BaseEntity {
 	@JoinColumns({ @JoinColumn(name = "SituationEvolutionID", nullable = true) })
 	@org.hibernate.annotations.IndexColumn(name = "SituationEvolutionIndex")
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)
-	private java.util.List<DiscreteStateInstance> discreteStateInstance = new java.util.ArrayList<>();
+	private List<DiscreteStateInstance> discreteStateInstance = new ArrayList<>();
 
 	public void setSituation_id(Integer value) {
 		this.situation_id = value;
@@ -98,19 +102,19 @@ public class SituationEvolution extends BaseEntity {
 		return majorEvoSteps;
 	}
 
-	public void setStateInstance(java.util.List value) {
+	public void setStateInstance(List<StateInstance> value) {
 		this.stateInstance = value;
 	}
 
-	public java.util.List getStateInstance() {
+	public List<StateInstance> getStateInstance() {
 		return stateInstance;
 	}
 
-	public void setDiscreteStateInstance(java.util.List value) {
+	public void setDiscreteStateInstance(List<DiscreteStateInstance> value) {
 		this.discreteStateInstance = value;
 	}
 
-	public java.util.List getDiscreteStateInstance() {
+	public List<DiscreteStateInstance> getDiscreteStateInstance() {
 		return discreteStateInstance;
 	}
 

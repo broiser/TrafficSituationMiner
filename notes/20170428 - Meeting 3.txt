@@ -1,8 +1,11 @@
+DONE
 asfinagTrafficmessage
 dupl - wenn datex_phr und vmis_id und begintime gleich -> relevant ist letztes mit entrytime
 bug: in der Reihung der States.
 evultionsequence nach stateinstances
 java programm für einen bestimmten Zeitraum 
+
+TODO
 objecttype.alias = ${datex_phr} 
 relationType intersection - direction, beginmeter endmeter
 relationType equals - direction, beginmeter endmeter

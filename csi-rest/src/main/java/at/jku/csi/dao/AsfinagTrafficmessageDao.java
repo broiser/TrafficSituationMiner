@@ -15,6 +15,7 @@ import at.jku.tk.csi.server.datalayer.source.dynamic_.asfinag.AsfinagTrafficmess
 public class AsfinagTrafficmessageDao extends AbstractDao<AsfinagTrafficmessage> {
 	private static final String DATEX_PHR = "datex_phr";
 	private static final String BEGINTIME = "begintime";
+	private static final String UPDATETIME = "update_time";
 	private static final String SITUATION_ID = "situation_id";
 	private static final String MESSAGETEXT = "messagetext";
 	private static final String VMIS_ID = "vmis_id";
@@ -31,7 +32,7 @@ public class AsfinagTrafficmessageDao extends AbstractDao<AsfinagTrafficmessage>
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<AsfinagTrafficmessage> query = builder.createQuery(AsfinagTrafficmessage.class);
 		Root<AsfinagTrafficmessage> root = query.from(AsfinagTrafficmessage.class);
-		query.orderBy(builder.asc(root.get(BEGINTIME)), builder.asc(root.get(DATEX_PHR)));
+		query.orderBy(builder.asc(root.get(BEGINTIME)), builder.asc(root.get(UPDATETIME)));
 		return getResultList(query.where(builder.equal(root.get(VMIS_ID), vmisId)));
 	}
 
