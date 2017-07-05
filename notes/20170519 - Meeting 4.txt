@@ -1,0 +1,11 @@
+objecttype.alias = ${datex_phr} 
+relationType intersection - direction, beginmeter endmeter
+relationType equals - direction, beginmeter endmeter
+
+
+{LSI}  -> alias $lsi
+{LSI, LSI} -> alias $lisi_1, $lisi_2
+
+-> in front of
+roadid _1 aufsteigend
+roadid _2 absteigend 

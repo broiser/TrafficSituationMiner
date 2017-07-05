@@ -24,25 +24,27 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import at.jku.tk.csi.entity.BaseEntity;
+import at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.EvolvingObject;
+import at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.StateInstance;
 
 @Entity
 @org.hibernate.annotations.Proxy(lazy = false)
 @Table(name = "AsfinagTrafficmessage")
-public class AsfinagTrafficmessage extends BaseEntity{
+public class AsfinagTrafficmessage extends BaseEntity {
 	public AsfinagTrafficmessage() {
 	}
 
-	@ManyToOne(targetEntity = at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.EvolvingObject.class, fetch = FetchType.LAZY)
+	@ManyToOne(targetEntity = EvolvingObject.class, fetch = FetchType.LAZY)
 	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.LOCK })
-	@JoinColumns({
-			@JoinColumn(name = "EvolvingObjectID2", referencedColumnName = "ID", insertable = false, updatable = false) })
-	private at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.EvolvingObject evolvingObject;
-
-	@ManyToOne(targetEntity = at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.StateInstance.class, fetch = FetchType.LAZY)
-	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.LOCK })
-	@JoinColumns({ @JoinColumn(name = "StateInstanceID2", referencedColumnName = "ID") })
+	@JoinColumns({ @JoinColumn(name = "EvolvingObjectID", referencedColumnName = "ID") })
 	@org.hibernate.annotations.LazyToOne(value = org.hibernate.annotations.LazyToOneOption.NO_PROXY)
-	private at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.StateInstance stateInstance;
+	private EvolvingObject evolvingObject;
+
+	@ManyToOne(targetEntity = StateInstance.class, fetch = FetchType.LAZY)
+	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.LOCK })
+	@JoinColumns({ @JoinColumn(name = "StateInstanceID", referencedColumnName = "ID") })
+	@org.hibernate.annotations.LazyToOne(value = org.hibernate.annotations.LazyToOneOption.NO_PROXY)
+	private StateInstance stateInstance;
 
 	@Column(name = "Act_state", nullable = true)
 	private Integer act_state;
@@ -159,7 +161,6 @@ public class AsfinagTrafficmessage extends BaseEntity{
 	private Integer parent_id;
 
 	@Column(name = "Picurl", nullable = true, length = 255)
-
 	private String picurl;
 
 	@Column(name = "Primlocation_code", nullable = true)
@@ -167,14 +168,13 @@ public class AsfinagTrafficmessage extends BaseEntity{
 
 	@Column(name = "Primlocation_offset", nullable = true)
 	private Integer primlocation_offset;
-	@Column(name = "Primlocation_text", nullable = true, length = 255)
 
+	@Column(name = "Primlocation_text", nullable = true, length = 255)
 	private String primlocation_text;
 	@Column(name = "Province", nullable = true, length = 255)
-
 	private String province;
-	@Column(name = "Road_code", nullable = true, length = 255)
 
+	@Column(name = "Road_code", nullable = true, length = 255)
 	private String road_code;
 
 	@Column(name = "Road_direction", nullable = true)
@@ -965,20 +965,19 @@ public class AsfinagTrafficmessage extends BaseEntity{
 		return validtime;
 	}
 
-	public void setStateInstance(at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.StateInstance value) {
+	public void setStateInstance(StateInstance value) {
 		this.stateInstance = value;
 	}
 
-	public at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.StateInstance getStateInstance() {
+	public StateInstance getStateInstance() {
 		return stateInstance;
 	}
 
-	public void setEvolvingObject(
-			at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.EvolvingObject value) {
+	public void setEvolvingObject(EvolvingObject value) {
 		this.evolvingObject = value;
 	}
 
-	public at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.EvolvingObject getEvolvingObject() {
+	public EvolvingObject getEvolvingObject() {
 		return evolvingObject;
 	}
 

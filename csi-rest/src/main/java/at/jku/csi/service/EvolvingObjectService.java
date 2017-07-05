@@ -1,8 +1,10 @@
 package at.jku.csi.service;
 
+import static java.text.MessageFormat.format;
 import static java.util.stream.Collectors.joining;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,14 +28,17 @@ public class EvolvingObjectService implements Serializable {
 
 	@Transactional
 	public EvolvingObject createEvolvingObject(List<AsfinagTrafficmessage> trafficmessages) {
-		return evolvingObjectDao.save(buildEvolvingObject(trafficmessages));
+		EvolvingObject evolvingObject = evolvingObjectDao.save(buildEvolvingObject(trafficmessages));
+		evolvingObject.getAsfinagTrafficmessage()
+				.forEach(trafficmessage -> trafficmessage.setEvolvingObject(evolvingObject));
+		return evolvingObjectDao.save(evolvingObject);
 	}
 
 	private EvolvingObject buildEvolvingObject(List<AsfinagTrafficmessage> trafficmessages) {
 		EvolvingObject evolvingObject = new EvolvingObject();
 		evolvingObject.setVmis_id(determineVmisId(trafficmessages));
 		evolvingObject.setNrUpdates(trafficmessages.size());
-		evolvingObject.setAsfinagTrafficmessage(trafficmessages);
+		evolvingObject.setAsfinagTrafficmessage(new HashSet<>(trafficmessages));
 		evolvingObject.setDuration(caluclateDuration(trafficmessages));
 		evolvingObject.setSources(determineSources(trafficmessages));
 		evolvingObject.setEvoSequence(determineEvoSequence(trafficmessages));
@@ -49,17 +54,13 @@ public class EvolvingObjectService implements Serializable {
 	private String determineSources(List<AsfinagTrafficmessage> trafficmessages) {
 		String sources = trafficmessages.stream().map(message -> message.getDatex_mse()).distinct()
 				.collect(joining(SOURCE_SYMBOL));
-		return cutStringAtLength255(sources);
+		return 255 < sources.length() ? format("{0}...", sources.substring(0, 251)) : sources;
 	}
 
 	private String determineEvoSequence(List<AsfinagTrafficmessage> trafficmessage) {
 		String evoSequence = trafficmessage.stream().map(message -> message.getDatex_phr())
 				.collect(joining(EVO_SYMBOL));
-		return cutStringAtLength255(evoSequence);
-	}
-
-	private String cutStringAtLength255(String value) {
-		return 255 < value.length() ? value.substring(0, 251) + "..." : value;
+		return 255 < evoSequence.length() ? format("{0}...", evoSequence.substring(0, 251)) : evoSequence;
 	}
 
 	private double caluclateDuration(List<AsfinagTrafficmessage> trafficmessages) {
@@ -72,7 +73,7 @@ public class EvolvingObjectService implements Serializable {
 	}
 
 	private int countDatexPhrChanges(List<AsfinagTrafficmessage> trafficmessages) {
-		int count = trafficmessages.isEmpty() ? 0 : 1;
+		int count = 0;
 		for (int i = 1; i < trafficmessages.size(); i++) {
 			AsfinagTrafficmessage current = trafficmessages.get(i);
 			AsfinagTrafficmessage previous = trafficmessages.get(i - 1);
@@ -84,7 +85,7 @@ public class EvolvingObjectService implements Serializable {
 	}
 
 	private int countSpatialEvolutions(List<AsfinagTrafficmessage> trafficmessages) {
-		int count = trafficmessages.isEmpty() ? 0 : 1;
+		int count = 0;
 		for (int i = 1; i < trafficmessages.size(); i++) {
 			AsfinagTrafficmessage current = trafficmessages.get(i);
 			AsfinagTrafficmessage previous = trafficmessages.get(i - 1);
@@ -103,5 +104,4 @@ public class EvolvingObjectService implements Serializable {
 	private boolean isSpatialEvolution(int meter1, int meter2) {
 		return !(meter1 == -1 || meter2 == -1) && (meter1 != meter2);
 	}
-
 }

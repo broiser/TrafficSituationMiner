@@ -1,15 +1,13 @@
 package at.jku.csi.service;
 
 import static java.lang.String.format;
+import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.joining;
 
 import java.io.Serializable;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -35,7 +33,7 @@ public class StateInstanceService implements Serializable {
 	public List<StateInstance> createStateInstances(List<AsfinagTrafficmessage> trafficmessages) {
 		List<StateInstance> stateInstances = new ArrayList<>();
 		for (List<AsfinagTrafficmessage> groupedTrafficmessages : groupTrafficeMessagesByBegintime(trafficmessages)) {
-			stateInstances.add(stateInstanceDao.save(buildStateInstance(groupedTrafficmessages)));
+			stateInstances.add(createStateInstance(groupedTrafficmessages));
 			if (2 <= stateInstances.size()) {
 				StateInstance nextStateInstance = stateInstances.get(stateInstances.size() - 1);
 				StateInstance previousStateInstance = stateInstances.get(stateInstances.size() - 2);
@@ -49,36 +47,29 @@ public class StateInstanceService implements Serializable {
 
 	private List<List<AsfinagTrafficmessage>> groupTrafficeMessagesByBegintime(
 			List<AsfinagTrafficmessage> trafficmessages) {
-		Map<Date, List<AsfinagTrafficmessage>> begintime2Trafficmessages = new TreeMap<>();
-		for (AsfinagTrafficmessage trafficmessage : trafficmessages) {
-			Timestamp begintime = trafficmessage.getBegintime();
-			if (begintime != null) {
-				if (!begintime2Trafficmessages.containsKey(begintime)) {
-					begintime2Trafficmessages.put(begintime, new ArrayList<>());
-				}
-				begintime2Trafficmessages.get(begintime).add(trafficmessage);
-			}
-		}
-		return new ArrayList<List<AsfinagTrafficmessage>>(begintime2Trafficmessages.values());
+		return new ArrayList<>(trafficmessages.stream()
+				.collect(groupingBy(trafficmesssage -> trafficmesssage.getBegintime())).values());
 	}
 
-	private StateInstance buildStateInstance(List<AsfinagTrafficmessage> trafficMessages) {
-		String name = determineStateInstanceName(trafficMessages);
+	private StateInstance createStateInstance(List<AsfinagTrafficmessage> trafficmessages) {
+		StateInstance stateInstance = stateInstanceDao.save(buildStateInstance(trafficmessages));
+		stateInstance.getAsfinagTrafficmessage()
+				.forEach(asfinagTrafficmessage -> asfinagTrafficmessage.setStateInstance(stateInstance));
+		return stateInstanceDao.save(stateInstance);
+	}
 
+	private StateInstance buildStateInstance(List<AsfinagTrafficmessage> trafficmessages) {
+		String name = determineStateInstanceName(trafficmessages);
 		StateInstance stateInstance = new StateInstance();
-		// stateInstance.setAsfinagTrafficmessage(trafficMessages);
 		stateInstance.setName(name);
-		stateInstance.setBeginTime(determineBegintime(trafficMessages));
 		stateInstance.setSituationStateType(findOrCreateSituationStateType(name));
+		stateInstance.setBeginTime(trafficmessages.iterator().next().getBegintime());
+		stateInstance.setAsfinagTrafficmessage(new HashSet<>(trafficmessages));
 		return stateInstance;
 	}
 
 	private String determineStateInstanceName(List<AsfinagTrafficmessage> trafficMessages) {
 		return format("{%s}", trafficMessages.stream().map(t -> t.getDatex_phr()).sorted().collect(joining(",")));
-	}
-
-	private Timestamp determineBegintime(List<AsfinagTrafficmessage> trafficMessages) {
-		return trafficMessages.iterator().next().getBegintime();
 	}
 
 	private SituationStateType findOrCreateSituationStateType(String name) {

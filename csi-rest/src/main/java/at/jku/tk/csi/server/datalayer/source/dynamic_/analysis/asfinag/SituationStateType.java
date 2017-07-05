@@ -33,37 +33,37 @@ public class SituationStateType extends BaseEntity {
 	@Column(name = "Type", nullable = true, length = 255)
 	private String type;
 
-	@OneToMany(mappedBy = "fromSituationStateType", targetEntity = at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.TransitionType.class)
+	@OneToMany(mappedBy = "fromSituationStateType", targetEntity = TransitionType.class)
 	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.LOCK })
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)
 	private java.util.Set fromTransition = new java.util.HashSet();
 
-	@OneToMany(mappedBy = "toSituationStateType", targetEntity = at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.TransitionType.class)
+	@OneToMany(mappedBy = "toSituationStateType", targetEntity = TransitionType.class)
 	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.LOCK })
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)
 	private java.util.Set toTransition = new java.util.HashSet();
 
-	@OneToMany(mappedBy = "situationStateType", targetEntity = at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.StateInstance.class)
+	@OneToMany(mappedBy = "situationStateType", targetEntity = StateInstance.class)
 	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.LOCK })
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)
 	private java.util.Set stateInstance = new java.util.HashSet();
 
-	@OneToMany(mappedBy = "situationStateType", targetEntity = at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.DiscreteStateInstance.class)
+	@OneToMany(mappedBy = "situationStateType", targetEntity = DiscreteStateInstance.class)
 	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.LOCK })
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)
 	private java.util.Set discreteStateInstance = new java.util.HashSet();
 
-	@OneToMany(mappedBy = "situationStateType", targetEntity = at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.ObjectType.class)
+	@OneToMany(mappedBy = "situationStateType", targetEntity = ObjectType.class)
 	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.LOCK })
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)
 	private java.util.Set objectType = new java.util.HashSet();
 
-	@ManyToMany(mappedBy = "situationStateType", targetEntity = at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.SituationEvolutionType.class)
+	@ManyToMany(mappedBy = "situationStateType", targetEntity = SituationEvolutionType.class)
 	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.LOCK })
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)

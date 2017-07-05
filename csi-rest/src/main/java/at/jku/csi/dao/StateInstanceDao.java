@@ -5,4 +5,9 @@ import at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.StateInst
 
 @Dao
 public class StateInstanceDao extends AbstractDao<StateInstance> {
+
+	public StateInstance findByid(int id) {
+		return entityManager.find(StateInstance.class, id);
+	}
+
 }

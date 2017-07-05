@@ -33,23 +33,23 @@ import at.jku.tk.csi.server.datalayer.source.dynamic_.asfinag.AsfinagTrafficmess
 @Table(name = "StateInstance")
 public class StateInstance extends BaseEntity {
 
-	@ManyToOne(targetEntity = at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.DiscreteStateInstance.class, fetch = FetchType.LAZY)
+	@ManyToOne(targetEntity = DiscreteStateInstance.class, fetch = FetchType.LAZY)
 	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.LOCK })
 	@JoinColumns({ @JoinColumn(name = "DiscreteStateInstanceID", referencedColumnName = "ID") })
 	@org.hibernate.annotations.LazyToOne(value = org.hibernate.annotations.LazyToOneOption.NO_PROXY)
-	private at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.DiscreteStateInstance discreteStateInstance;
+	private DiscreteStateInstance discreteStateInstance;
 
-	@ManyToOne(targetEntity = at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.SituationEvolution.class, fetch = FetchType.LAZY)
+	@ManyToOne(targetEntity = SituationEvolution.class, fetch = FetchType.LAZY)
 	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.LOCK })
 	@JoinColumns({
 			@JoinColumn(name = "SituationEvolutionID", referencedColumnName = "ID", insertable = false, updatable = false) })
-	private at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.SituationEvolution situationEvolution;
+	private SituationEvolution situationEvolution;
 
-	@ManyToOne(targetEntity = at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.SituationStateType.class, fetch = FetchType.LAZY)
+	@ManyToOne(targetEntity = SituationStateType.class, fetch = FetchType.LAZY)
 	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.LOCK })
 	@JoinColumns({ @JoinColumn(name = "SituationStateTypeID", referencedColumnName = "ID") })
 	@org.hibernate.annotations.LazyToOne(value = org.hibernate.annotations.LazyToOneOption.NO_PROXY)
-	private at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.SituationStateType situationStateType;
+	private SituationStateType situationStateType;
 
 	@Column(name = "BeginTime", nullable = true)
 	@Temporal(TemporalType.TIMESTAMP)
@@ -61,21 +61,21 @@ public class StateInstance extends BaseEntity {
 	@Column(name = "Name", nullable = true, length = 255)
 	private String name;
 
-	@OneToOne(mappedBy = "nextStateInstanceStateinstance", targetEntity = at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.Transition.class)
+	@OneToOne(mappedBy = "nextStateInstanceStateinstance", targetEntity = Transition.class)
 	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.LOCK })
-	private at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.Transition previousStateInstanceTransition;
+	private Transition previousStateInstanceTransition;
 
-	@OneToMany(mappedBy = "stateInstance", targetEntity = at.jku.tk.csi.server.datalayer.source.dynamic_.asfinag.AsfinagTrafficmessage.class)
+	@OneToMany(mappedBy = "stateInstance", targetEntity = AsfinagTrafficmessage.class)
 	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.LOCK })
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)
 	private java.util.Set<AsfinagTrafficmessage> asfinagTrafficmessage = new java.util.HashSet<>();
 
-	@OneToOne(mappedBy = "previousStateInstanceStateinstance", targetEntity = at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.Transition.class)
+	@OneToOne(mappedBy = "previousStateInstanceStateinstance", targetEntity = Transition.class)
 	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.LOCK })
-	private at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.Transition nextStateInstanceTransition;
+	private Transition nextStateInstanceTransition;
 
 	public void setBeginTime(java.util.Date value) {
 		this.beginTime = value;
@@ -101,25 +101,23 @@ public class StateInstance extends BaseEntity {
 		return name;
 	}
 
-	public void setSituationEvolution(
-			at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.SituationEvolution value) {
+	public void setSituationEvolution(SituationEvolution value) {
 		this.situationEvolution = value;
 	}
 
-	public at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.SituationEvolution getSituationEvolution() {
+	public SituationEvolution getSituationEvolution() {
 		return situationEvolution;
 	}
 
-	public void setDiscreteStateInstance(
-			at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.DiscreteStateInstance value) {
+	public void setDiscreteStateInstance(DiscreteStateInstance value) {
 		this.discreteStateInstance = value;
 	}
 
-	public at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.DiscreteStateInstance getDiscreteStateInstance() {
+	public DiscreteStateInstance getDiscreteStateInstance() {
 		return discreteStateInstance;
 	}
 
-	public at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.StateInstance getPreviousStateInstanceStateinstance() {
+	public StateInstance getPreviousStateInstanceStateinstance() {
 		if (previousStateInstanceTransition != null) {
 			return previousStateInstanceTransition.getPreviousStateInstanceStateinstance();
 		} else {
@@ -134,28 +132,25 @@ public class StateInstance extends BaseEntity {
 		}
 	}
 
-	public void addPreviousStateInstanceStateinstance(
-			at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.Transition aPreviousStateInstanceTransition,
-			at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.StateInstance aPreviousStateInstanceStateinstance) {
+	public void addPreviousStateInstanceStateinstance(Transition aPreviousStateInstanceTransition,
+			StateInstance aPreviousStateInstanceStateinstance) {
 		this.setPreviousStateInstanceTransition(aPreviousStateInstanceTransition);
 		aPreviousStateInstanceTransition.setPreviousStateInstanceStateinstance(aPreviousStateInstanceStateinstance);
 	}
 
-	public void setPreviousStateInstanceTransition(
-			at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.Transition value) {
+	public void setPreviousStateInstanceTransition(Transition value) {
 		this.previousStateInstanceTransition = value;
 	}
 
-	public at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.Transition getPreviousStateInstanceTransition() {
+	public Transition getPreviousStateInstanceTransition() {
 		return previousStateInstanceTransition;
 	}
 
-	public void setSituationStateType(
-			at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.SituationStateType value) {
+	public void setSituationStateType(SituationStateType value) {
 		this.situationStateType = value;
 	}
 
-	public at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.SituationStateType getSituationStateType() {
+	public SituationStateType getSituationStateType() {
 		return situationStateType;
 	}
 
@@ -167,7 +162,7 @@ public class StateInstance extends BaseEntity {
 		return asfinagTrafficmessage;
 	}
 
-	public at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.StateInstance getNextStateInstanceStateinstance() {
+	public StateInstance getNextStateInstanceStateinstance() {
 		if (nextStateInstanceTransition != null) {
 			return nextStateInstanceTransition.getNextStateInstanceStateinstance();
 		} else {
@@ -182,19 +177,17 @@ public class StateInstance extends BaseEntity {
 		}
 	}
 
-	public void addNextStateInstanceStateinstance(
-			at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.Transition aNextStateInstanceTransition,
-			at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.StateInstance aNextStateInstanceStateinstance) {
+	public void addNextStateInstanceStateinstance(Transition aNextStateInstanceTransition,
+			StateInstance aNextStateInstanceStateinstance) {
 		this.setNextStateInstanceTransition(aNextStateInstanceTransition);
 		aNextStateInstanceTransition.setNextStateInstanceStateinstance(aNextStateInstanceStateinstance);
 	}
 
-	public void setNextStateInstanceTransition(
-			at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.Transition value) {
+	public void setNextStateInstanceTransition(Transition value) {
 		this.nextStateInstanceTransition = value;
 	}
 
-	public at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.Transition getNextStateInstanceTransition() {
+	public Transition getNextStateInstanceTransition() {
 		return nextStateInstanceTransition;
 	}
 
@@ -240,5 +233,4 @@ public class StateInstance extends BaseEntity {
 			return sb.toString();
 		}
 	}
-
 }

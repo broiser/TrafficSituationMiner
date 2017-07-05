@@ -13,33 +13,37 @@
  */
 package at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import at.jku.tk.csi.entity.BaseEntity;
 
-
 @Entity
 @org.hibernate.annotations.Proxy(lazy = false)
 @Table(name = "RelationType")
 public class RelationType extends BaseEntity {
+	
 	@Column(name = "Name", nullable = true, length = 255)
 	private String name;
 
-	@OneToOne(mappedBy = "relationTypeL", targetEntity = at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.ObjectType.class, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "relationTypeL", targetEntity = at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.ObjectType.class, fetch = FetchType.LAZY)
 	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.LOCK })
 	@org.hibernate.annotations.LazyToOne(value = org.hibernate.annotations.LazyToOneOption.NO_PROXY)
-	private at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.ObjectType objectTypeL;
+	private Set<ObjectType> objectTypeL = new HashSet<>();
 
 	@OneToOne(mappedBy = "relationTypeR", targetEntity = at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.ObjectType.class, fetch = FetchType.LAZY)
 	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.LOCK })
 	@org.hibernate.annotations.LazyToOne(value = org.hibernate.annotations.LazyToOneOption.NO_PROXY)
-	private at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.ObjectType objectTypeR;
+	private Set<ObjectType> objectTypeR = new HashSet<>();
 
 	public void setName(String value) {
 		this.name = value;
@@ -49,19 +53,19 @@ public class RelationType extends BaseEntity {
 		return name;
 	}
 
-	public void setObjectTypeL(at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.ObjectType value) {
-		this.objectTypeL = value;
+	public void setObjectTypeLs(Set<ObjectType> objectTypeL) {
+		this.objectTypeL = objectTypeL;
 	}
 
-	public at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.ObjectType getObjectTypeL() {
+	public Set<ObjectType> getObjectTypeL() {
 		return objectTypeL;
 	}
 
-	public void setObjectTypeR(at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.ObjectType value) {
-		this.objectTypeR = value;
+	public void setObjectTypeRs(Set<ObjectType> objectTypeR) {
+		this.objectTypeR = objectTypeR;
 	}
 
-	public at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.ObjectType getObjectTypeR() {
+	public Set<ObjectType> getObjectTypeR() {
 		return objectTypeR;
 	}
 
@@ -77,14 +81,8 @@ public class RelationType extends BaseEntity {
 			sb.append("RelationType[ ");
 			sb.append("ID=").append(getID()).append(" ");
 			sb.append("Name=").append(getName()).append(" ");
-			if (getObjectTypeL() != null)
-				sb.append("ObjectTypeL.Persist_ID=").append(getObjectTypeL().toString(true)).append(" ");
-			else
-				sb.append("ObjectTypeL=null ");
-			if (getObjectTypeR() != null)
-				sb.append("ObjectTypeR.Persist_ID=").append(getObjectTypeR().toString(true)).append(" ");
-			else
-				sb.append("ObjectTypeR=null ");
+			sb.append("ObjectTypeL.size=").append(getObjectTypeL().size()).append(" ");
+			sb.append("ObjectTypeR.size=").append(getObjectTypeR().size()).append(" ");
 			sb.append("]");
 			return sb.toString();
 		}

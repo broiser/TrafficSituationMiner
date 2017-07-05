@@ -37,12 +37,10 @@ public class SituationEvolutionService implements Serializable {
 	public SituationEvolution findSituationEvoution(long situationId) {
 		return situationEvolutionDao.findSituationEvolution(situationId);
 	}
-	
+
 	@Transactional
 	public SituationEvolution createSituationEvolution(int situationId) {
-		List<AsfinagTrafficmessage> trafficmessage = findAsfinagTrafficmessagesBySituationId(situationId);
-		List<DiscreteStateInstance> discreteStateInstances = discreteStateInstanceService
-				.createDiscreteStateInstances(trafficmessage);
+		List<DiscreteStateInstance> discreteStateInstances = createDiscreteStateInstances(situationId);
 		List<StateInstance> stateInstances = buildStateInstances(discreteStateInstances);
 
 		SituationEvolution situationEvolution = new SituationEvolution();
@@ -54,6 +52,11 @@ public class SituationEvolutionService implements Serializable {
 		situationEvolution.setMajorEvoSteps(discreteStateInstances.size());
 		situationEvolution.setTotalDuration(calculateTotalDuration(stateInstances));
 		return situationEvolutionDao.save(situationEvolution);
+	}
+
+	private List<DiscreteStateInstance> createDiscreteStateInstances(int situationId) {
+		List<AsfinagTrafficmessage> trafficmessages = findAsfinagTrafficmessagesBySituationId(situationId);
+		return discreteStateInstanceService.createDiscreteStateInstances(trafficmessages);
 	}
 
 	private List<StateInstance> buildStateInstances(List<DiscreteStateInstance> discreteStateInstances) {
@@ -111,9 +114,8 @@ public class SituationEvolutionService implements Serializable {
 
 		public int hashCode() {
 			return trafficmessage.getSituation_id().hashCode() + trafficmessage.getVmis_id().hashCode()
-					+ trafficmessage.getBeginmeter().hashCode() + trafficmessage.getDatex_phr().hashCode();
+					+ trafficmessage.getBegintime().hashCode() + trafficmessage.getDatex_phr().hashCode();
 		}
 	}
 
-	
 }

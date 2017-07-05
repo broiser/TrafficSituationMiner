@@ -21,6 +21,10 @@ public class AsfinagTrafficmessageService implements Serializable {
 		return asfinagTrafficmessageDao.findSituationIds(from, to);
 	}
 
+	public List<Integer> findVmisIds(Date from, Date to) {
+		return asfinagTrafficmessageDao.findVmisIds(from, to);
+	}
+
 	public List<AsfinagTrafficmessage> findAsfinagTrafficmessagesByVmisId(int vmisId) {
 		return asfinagTrafficmessageDao.findAsfinagTrafficsByVmisId(vmisId);
 	}

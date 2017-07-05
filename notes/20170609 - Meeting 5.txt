@@ -1,0 +1,22 @@
+1. RelationTypes
+- intersects
+- equals
+- in_front_of
+- very close            	0-3 km
+- close  	              	3-6 km
+- intermediate	            6-8 km
+- far                		 >8 km
+
+2. Durchlauf für alle SituationTypes
+3. Geometry berechnen für grafische Anzeige.
+4. Analysetool
+	- ereignistype
+	- bereich
+	- timestamp
+	- evolutionsdauer
+	- evolutionsschritte
+	- evoutionsstatetype
+	- situationsevolutiontype
+	
+	+ http://leafletjs.com/examples.html
+	+ grafic lib (Markus Hiesmair)

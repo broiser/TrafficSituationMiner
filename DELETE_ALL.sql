@@ -10,3 +10,6 @@ DELETE FROM situationevolutiontype;
 DELETE FROM situationevolutiontype_transitiontype;
 DELETE FROM situationstatetype;
 DELETE FROM situationstatetype_situationevolutiontype;
+
+UPDATE asfinagtrafficmessage SET stateinstanceid = null WHERE stateinstanceid IS NOT NULL;
+UPDATE asfinagtrafficmessage SET evolvingobjectid = null WHERE evolvingobjectid IS NOT NULL;

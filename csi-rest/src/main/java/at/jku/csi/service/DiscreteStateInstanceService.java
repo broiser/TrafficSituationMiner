@@ -34,16 +34,17 @@ public class DiscreteStateInstanceService implements Serializable {
 		List<StateInstance> stateInstances = stateInstanceService.createStateInstances(trafficmessages);
 		List<DiscreteStateInstance> discreteStateInstances = new ArrayList<>();
 		for (List<StateInstance> groupedStateInstances : groupStateInstancesByName(stateInstances)) {
-			DiscreteStateInstance discreteStateInstance = createDiscreateStateInstance(groupedStateInstances);
-			discreteStateInstance.getStateInstance()
-					.forEach(stateInstance -> stateInstance.setDiscreteStateInstance(discreteStateInstance));
-			discreteStateInstances.add(discreteStateInstanceDao.save(discreteStateInstance));
+			discreteStateInstances.add(createDiscreteStateInstance(groupedStateInstances));
 		}
-		return discreteStateInstances;
+		return discreteStateInstanceDao.saveAll(discreteStateInstances);
 	}
 
-	private DiscreteStateInstance createDiscreateStateInstance(List<StateInstance> groupedStateInstances) {
-		return discreteStateInstanceDao.save(buildDiscreteStateInstance(groupedStateInstances));
+	private DiscreteStateInstance createDiscreteStateInstance(List<StateInstance> stateInstances) {
+		DiscreteStateInstance discreteStateInstance = discreteStateInstanceDao
+				.save(buildDiscreteStateInstance(stateInstances));
+		discreteStateInstance.getStateInstance()
+				.forEach(stateInstance -> stateInstance.setDiscreteStateInstance(discreteStateInstance));
+		return discreteStateInstanceDao.save(discreteStateInstance);
 	}
 
 	private DiscreteStateInstance buildDiscreteStateInstance(List<StateInstance> stateInstances) {

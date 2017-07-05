@@ -11,13 +11,13 @@ import at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.ObjectTyp
 @Dao
 public class ObjectTypeDao extends AbstractDao<ObjectType> {
 
-	private static final String ALIAS = "alias";
-	
-	public ObjectType findObjectType(String alias) {
+	public ObjectType findObjectType(String alias, int situationStateTypeId) {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<ObjectType> query = builder.createQuery(ObjectType.class);
 		Root<ObjectType> root = query.from(ObjectType.class);
-		Predicate predicate = builder.equal(root.get(ALIAS), alias);
-		return getSingleResult(query.select(root).where(predicate));
+		Predicate aliasPredicate = builder.equal(root.get("alias"), alias);
+		Predicate situationStateTypePredicate = builder.equal(root.get("situationstatetype_id"), situationStateTypeId);
+		return getSingleResult(query.where(aliasPredicate, situationStateTypePredicate));
 	}
+
 }

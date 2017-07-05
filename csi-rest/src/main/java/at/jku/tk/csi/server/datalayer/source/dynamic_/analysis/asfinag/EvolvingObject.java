@@ -13,6 +13,9 @@
  */
 package at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -52,10 +55,10 @@ public class EvolvingObject extends BaseEntity {
 	@OneToMany(targetEntity = at.jku.tk.csi.server.datalayer.source.dynamic_.asfinag.AsfinagTrafficmessage.class)
 	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.LOCK })
-	@JoinColumns({ @JoinColumn(name = "EvolvingObjectID2", nullable = true) })
+	@JoinColumns({ @JoinColumn(name = "EvolvingObjectID", nullable = true) })
 	@org.hibernate.annotations.IndexColumn(name = "`Column`")
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)
-	private java.util.List<AsfinagTrafficmessage> asfinagTrafficmessage = new java.util.ArrayList<AsfinagTrafficmessage>();
+	private Set<AsfinagTrafficmessage> asfinagTrafficmessage = new HashSet<AsfinagTrafficmessage>();
 
 	public void setVmis_id(int value) {
 		this.vmis_id = value;
@@ -113,11 +116,11 @@ public class EvolvingObject extends BaseEntity {
 		return sources;
 	}
 
-	public void setAsfinagTrafficmessage(java.util.List value) {
+	public void setAsfinagTrafficmessage(Set<AsfinagTrafficmessage> value) {
 		this.asfinagTrafficmessage = value;
 	}
 
-	public java.util.List getAsfinagTrafficmessage() {
+	public Set<AsfinagTrafficmessage> getAsfinagTrafficmessage() {
 		return asfinagTrafficmessage;
 	}
 

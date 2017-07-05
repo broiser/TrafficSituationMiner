@@ -11,12 +11,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 
-import org.hibernate.Criteria;
-import org.hibernate.ScrollMode;
-import org.hibernate.ScrollableResults;
-import org.hibernate.Session;
-
 import at.jku.tk.csi.entity.BaseEntity;
+import at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.StateInstance;
 
 public abstract class AbstractDao<T extends BaseEntity> implements Serializable {
 
@@ -24,16 +20,12 @@ public abstract class AbstractDao<T extends BaseEntity> implements Serializable 
 
 	@Inject
 	EntityManager entityManager;
-
-	public void refresh(T entity) {
-		entityManager.refresh(entity);
-	}
-
+	
 	@Transactional(value = TxType.MANDATORY)
 	public T save(T entity) {
 		return entityManager.merge(entity);
 	}
-
+	
 	@Transactional(value = TxType.MANDATORY)
 	public List<T> saveAll(List<T> entities) {
 		List<T> savedEntities = new ArrayList<>();
@@ -41,18 +33,6 @@ public abstract class AbstractDao<T extends BaseEntity> implements Serializable 
 			savedEntities.add(save(entity));
 		}
 		return savedEntities;
-	}
-
-	protected Criteria createCriteria(Class<T> responseClass) {
-		return ((Session) entityManager.getDelegate()).createCriteria(responseClass);
-	}
-
-	protected ScrollableResults getScrollableResults(Criteria criteria, int fetchSize) {
-		return getScrollableResults(criteria, FETCH_SIZE);
-	}
-
-	protected ScrollableResults getScrollableResults(Criteria criteria) {
-		return criteria.setFetchSize(FETCH_SIZE).scroll(ScrollMode.FORWARD_ONLY);
 	}
 
 	protected <S> List<S> getResultList(CriteriaQuery<S> query) {
