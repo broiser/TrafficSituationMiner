@@ -12,7 +12,6 @@ import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 
 import at.jku.tk.csi.entity.BaseEntity;
-import at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.StateInstance;
 
 public abstract class AbstractDao<T extends BaseEntity> implements Serializable {
 

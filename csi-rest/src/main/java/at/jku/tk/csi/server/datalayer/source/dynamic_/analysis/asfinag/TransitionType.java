@@ -18,10 +18,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinColumns;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import at.jku.tk.csi.entity.BaseEntity;
@@ -46,43 +43,12 @@ public class TransitionType extends BaseEntity {
 	@Column(name = "TransitionSequence", nullable = true, length = 255)
 	private String transitionSequence;
 
-	@OneToMany(mappedBy = "transitionType", targetEntity = at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.Transition.class)
-	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE,
-			org.hibernate.annotations.CascadeType.LOCK })
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)
-	private java.util.Set<Transition> transition = new java.util.HashSet<>();
-
-	@ManyToMany(targetEntity = at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.SituationEvolutionType.class)
-	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE,
-			org.hibernate.annotations.CascadeType.LOCK })
-	@JoinTable(name = "SituationEvolutionType_TransitionType", joinColumns = {
-			@JoinColumn(name = "TransitionTypeID") }, inverseJoinColumns = {
-					@JoinColumn(name = "SituationEvolutionTypeID") })
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)
-	private java.util.Set<SituationEvolutionType> situationEvolutionType = new java.util.HashSet<>();
-
 	public void setTransitionSequence(String value) {
 		this.transitionSequence = value;
 	}
 
 	public String getTransitionSequence() {
 		return transitionSequence;
-	}
-
-	public void setTransition(java.util.Set value) {
-		this.transition = value;
-	}
-
-	public java.util.Set getTransition() {
-		return transition;
-	}
-
-	public void setSituationEvolutionType(java.util.Set value) {
-		this.situationEvolutionType = value;
-	}
-
-	public java.util.Set getSituationEvolutionType() {
-		return situationEvolutionType;
 	}
 
 	public void setFromSituationStateType(
@@ -125,8 +91,6 @@ public class TransitionType extends BaseEntity {
 			else
 				sb.append("FromSituationStateType=null ");
 			sb.append("TransitionSequence=").append(getTransitionSequence()).append(" ");
-			sb.append("Transition.size=").append(getTransition().size()).append(" ");
-			sb.append("SituationEvolutionType.size=").append(getSituationEvolutionType().size()).append(" ");
 			sb.append("]");
 			return sb.toString();
 		}

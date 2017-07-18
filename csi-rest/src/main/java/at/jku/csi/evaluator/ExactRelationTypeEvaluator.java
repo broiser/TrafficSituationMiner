@@ -10,6 +10,10 @@ public class ExactRelationTypeEvaluator implements Evaluator {
 
 	@Override
 	public boolean evaluate(AsfinagTrafficmessage left, AsfinagTrafficmessage right) {
+		if (left.getRoad_code() == null || !(left.getRoad_code().equals(right.getRoad_code()))) {
+			return false;
+		}
+
 		return left.getBeginmeter().intValue() == right.getBeginmeter().intValue()
 				&& left.getEndmeter().intValue() == right.getEndmeter().intValue();
 	}

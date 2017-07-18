@@ -15,7 +15,6 @@ package at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import at.jku.tk.csi.entity.BaseEntity;
@@ -33,12 +32,6 @@ public class TrafficType extends BaseEntity {
 
 	@Column(name = "Type", nullable = true, length = 255)
 	private String type;
-
-	@OneToMany(mappedBy = "trafficType", targetEntity = ObjectType.class)
-	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE,
-			org.hibernate.annotations.CascadeType.LOCK })
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)
-	private java.util.Set<ObjectType> objectType = new java.util.HashSet<>();
 
 	public void setPHR(String value) {
 		this.PHR = value;
@@ -64,14 +57,6 @@ public class TrafficType extends BaseEntity {
 		return type;
 	}
 
-	public void setObjectType(java.util.Set<ObjectType> value) {
-		this.objectType = value;
-	}
-
-	public java.util.Set<ObjectType> getObjectType() {
-		return objectType;
-	}
-
 	public String toString() {
 		return toString(false);
 	}
@@ -86,7 +71,6 @@ public class TrafficType extends BaseEntity {
 			sb.append("PHR=").append(getPHR()).append(" ");
 			sb.append("MessageText=").append(getMessageText()).append(" ");
 			sb.append("Type=").append(getType()).append(" ");
-			sb.append("ObjectType.size=").append(getObjectType().size()).append(" ");
 			sb.append("]");
 			return sb.toString();
 		}

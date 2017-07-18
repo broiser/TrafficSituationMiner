@@ -1,6 +1,9 @@
 package at.jku.csi.evaluator;
 
+import javax.inject.Inject;
+
 import at.jku.csi.cdi.Service;
+import at.jku.csi.determiner.RoadDirectionDeterminer;
 import at.jku.tk.csi.server.datalayer.source.dynamic_.asfinag.AsfinagTrafficmessage;
 
 @Service
@@ -8,41 +11,27 @@ public class InFrontOfRelationTypeEvaluator implements Evaluator {
 
 	public static final String IN_FRONT_OF_RELATION = "IN_FRONT_OF";
 
-	private enum DIRECTION {
-		ASC {
-			@Override
-			public boolean apply(int x1, int x2) {
-				return x1 < x2;
-			}
-		},
-		DESC {
-
-			@Override
-			public boolean apply(int x1, int x2) {
-				return x1 > x2;
-			}
-		};
-
-		public abstract boolean apply(int x1, int x2);
-	}
+	@Inject
+	private RoadDirectionDeterminer roadDirectionDeterminer;
 
 	@Override
 	public boolean evaluate(AsfinagTrafficmessage left, AsfinagTrafficmessage right) {
 		if (left.getRoad_code() == null || !(left.getRoad_code().equals(right.getRoad_code()))) {
 			return false;
 		}
-		return isInFrontOf(determineDirection(left, right), left.getBeginmeter(), left.getEndmeter(),
-				right.getBeginmeter(), right.getEndmeter());
+		switch (roadDirectionDeterminer.determineDirection(left, right)) {
+		case ASC:
+			return evalute(Operator.LT, left, right);
+		case DESC:
+			return evalute(Operator.GT, left, right);
+		default:
+			return false;
+		}
 	}
 
-	private DIRECTION determineDirection(AsfinagTrafficmessage left, AsfinagTrafficmessage right) {
-		return left.getRoad_direction() == 1 && right.getRoad_direction() == 1 ? DIRECTION.ASC : DIRECTION.DESC;
-	}
-
-	private boolean isInFrontOf(DIRECTION direction, int leftBeginmeter, int leftEndmeter, int rightBeginmeter,
-			int rightEndmeter) {
-		boolean validLeft = direction.apply(leftBeginmeter, leftEndmeter);
-		boolean validRight = direction.apply(rightBeginmeter, rightEndmeter);
-		return validLeft && validRight && direction.apply(leftEndmeter, rightBeginmeter);
+	private boolean evalute(Operator operator, AsfinagTrafficmessage left, AsfinagTrafficmessage right) {
+		boolean validRight = operator.apply(right.getBeginmeter(), right.getEndmeter());
+		boolean validLeft = operator.apply(left.getBeginmeter(), left.getEndmeter());
+		return validLeft && validRight && operator.apply(left.getEndmeter(), right.getBeginmeter());
 	}
 }

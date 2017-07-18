@@ -2,21 +2,34 @@ package at.jku.csi.evaluator;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import at.jku.csi.determiner.RoadDirectionDeterminer;
 import at.jku.tk.csi.server.datalayer.source.dynamic_.asfinag.AsfinagTrafficmessage;
 
 @RunWith(MockitoJUnitRunner.class)
 public class InFrontOfRelationTypeEvaluatorTest {
 
+	@Mock
+	private RoadDirectionDeterminer roadDirectionDeterminer;
+
 	@InjectMocks
 	private InFrontOfRelationTypeEvaluator inFrontOfRelationTypeEvaluator;
+
+	@Before
+	public void mockRoadDirectionDeterminer() {
+		when(roadDirectionDeterminer.determineDirection(any(AsfinagTrafficmessage.class),
+				any(AsfinagTrafficmessage.class))).thenCallRealMethod();
+	}
 
 	@Test
 	public void trafficMessageIsNotInFrontOfBecauseOfDifferentRoadDirections() throws Exception {
@@ -49,7 +62,7 @@ public class InFrontOfRelationTypeEvaluatorTest {
 
 		assertTrue(inFrontOfRelationTypeEvaluator.evaluate(trafficMessage1, trafficMessage2));
 	}
-	
+
 	@Test
 	public void trafficMessageWithDirection2IsNotInFrontOf() throws Exception {
 		AsfinagTrafficmessage trafficMessage1 = mockTrafficMessage(2, 40, 30);

@@ -13,7 +13,6 @@
  */
 package at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +49,6 @@ public class SituationEvolution extends BaseEntity {
 	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.LOCK })
 	@JoinColumns({ @JoinColumn(name = "SituationEvolutionID", nullable = true) })
-	@org.hibernate.annotations.IndexColumn(name = "SituationEvolutionIndex")
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)
 	private List<StateInstance> stateInstance = new ArrayList<>();
 
@@ -58,7 +56,6 @@ public class SituationEvolution extends BaseEntity {
 	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.LOCK })
 	@JoinColumns({ @JoinColumn(name = "SituationEvolutionID", nullable = true) })
-	@org.hibernate.annotations.IndexColumn(name = "SituationEvolutionIndex")
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)
 	private List<DiscreteStateInstance> discreteStateInstance = new ArrayList<>();
 

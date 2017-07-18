@@ -1,11 +1,11 @@
 1. RelationTypes
-- intersects
-- equals
-- in_front_of
-- very close            	0-3 km
-- close  	              	3-6 km
-- intermediate	            6-8 km
-- far                		 >8 km
+- intersects								DONE
+- exakt										DONE
+- in_front_of								DONE
+- very close            	0-3 km			DONE
+- close  	              	3-6 km			DONE
+- intermediate	            6-8 km			DONE
+- far                		 >8 km			DONE
 
 2. Durchlauf für alle SituationTypes
 3. Geometry berechnen für grafische Anzeige.

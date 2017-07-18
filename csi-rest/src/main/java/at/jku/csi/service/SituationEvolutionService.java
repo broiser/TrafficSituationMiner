@@ -37,7 +37,7 @@ public class SituationEvolutionService implements Serializable {
 	public SituationEvolution findSituationEvoution(long situationId) {
 		return situationEvolutionDao.findSituationEvolution(situationId);
 	}
-
+	
 	@Transactional
 	public SituationEvolution createSituationEvolution(int situationId) {
 		List<DiscreteStateInstance> discreteStateInstances = createDiscreteStateInstances(situationId);
