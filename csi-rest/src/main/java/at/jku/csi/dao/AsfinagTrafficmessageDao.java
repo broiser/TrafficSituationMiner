@@ -36,6 +36,10 @@ public class AsfinagTrafficmessageDao extends AbstractDao<AsfinagTrafficmessage>
 		return getResultList(query.distinct(true).select(root.get(VMIS_ID)));
 	}
 
+	public AsfinagTrafficmessage findAsfinagTrafficmessageById(int asfinagTrafficmessageId) {
+		return entityManager.find(AsfinagTrafficmessage.class, asfinagTrafficmessageId);
+	}
+
 	public List<AsfinagTrafficmessage> findAsfinagTrafficsByVmisId(int vmisId) {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<AsfinagTrafficmessage> query = builder.createQuery(AsfinagTrafficmessage.class);

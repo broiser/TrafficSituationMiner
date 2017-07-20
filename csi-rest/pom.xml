@@ -112,41 +112,14 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${hibernate.version}</version><!--$NO-MVN-MAN-VER$-->
+			<version>${hibernate.version}</version><!--$NO-MVN-MAN-VER$ -->
 			<scope>provided</scope>
-			<exclusions>
-				<exclusion>
-					<artifactId>jboss-logging</artifactId>
-					<groupId>org.jboss.logging</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jboss-logging-annotations</artifactId>
-					<groupId>org.jboss.logging</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-spatial</artifactId>
 			<version>${hibernate.version}</version>
-			<exclusions>
-				<exclusion>
-					<artifactId>jboss-logging</artifactId>
-					<groupId>org.jboss.logging</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>postgresql</artifactId>
-					<groupId>postgresql</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>jboss-logging-annotations</artifactId>
-					<groupId>org.jboss.logging</groupId>
-				</exclusion>
-				<exclusion>
-					<artifactId>hibernate-core</artifactId>
-					<groupId>org.hibernate</groupId>
-				</exclusion>
-			</exclusions>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 

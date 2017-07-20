@@ -7,8 +7,8 @@
 - intermediate	            6-8 km			DONE
 - far                		 >8 km			DONE
 
-2. Durchlauf für alle SituationTypes
-3. Geometry berechnen für grafische Anzeige.
+2. Durchlauf für alle SituationTypes		DOING
+3. Geometry berechnen für grafische Anzeige.	DONE
 4. Analysetool
 	- ereignistype
 	- bereich
