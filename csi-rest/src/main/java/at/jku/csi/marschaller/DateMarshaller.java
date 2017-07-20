@@ -10,7 +10,8 @@ import at.jku.csi.cdi.Service;
 @Service
 public class DateMarshaller extends XmlAdapter<String, Date> {
 
-	private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+	private static final String DD_MM_YYYY = "dd.MM.yyyy";
+	private final SimpleDateFormat dateFormat = new SimpleDateFormat(DD_MM_YYYY);
 
 	@Override
 	public Date unmarshal(String dateAsString) throws Exception {

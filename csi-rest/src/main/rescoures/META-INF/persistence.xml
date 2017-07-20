@@ -5,11 +5,35 @@
 	<persistence-unit name="csiSA" transaction-type="JTA">
 		<provider>org.hibernate.ejb.HibernatePersistence</provider>
 		<jta-data-source>java:jboss/datasources/csiSA</jta-data-source>
+		<class>at.jku.tk.csi.server.datalayer.source.dynamic_.asfinag.AsfinagTrafficmessage</class>
+		<class>at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.DiscreteStateInstance</class>
+		<class>at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.EvolvingObject</class>
+		<class>at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.ObjectType</class>
+		<class>at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.RelationType</class>
+		<class>at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.SituationEvolution</class>
+		<class>at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.SituationEvolutionType</class>
+		<class>at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.SituationStateType</class>
+		<class>at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.StateInstance</class>
+		<class>at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.TrafficType</class>
+		<class>at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.Transition</class>
+		<class>at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.TransitionType</class>
 		<properties>
 			<property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect" />
-			<!-- <property name="hibernate.dialect" value="org.hibernate.spatial.dialect.postgis.PostgisDialect" /> -->
 			<property name="hibernate.format_sql" value="true" />
-			<property name="hibernate.show_sql" value="true" />
+			<property name="hibernate.show_sql" value="false" />
+			<property name="hibernate.generate_statistics" value="false" />
+		</properties>
+	</persistence-unit>
+	<persistence-unit name="infrastructureSA"
+		transaction-type="JTA">
+		<provider>org.hibernate.ejb.HibernatePersistence</provider>
+		<jta-data-source>java:jboss/datasources/infrastructureSA</jta-data-source>
+		<class>at.jku.tk.csi.server.datalayer.source.static_.analysis.Route</class>
+		<properties>
+			<property name="hibernate.dialect"
+				value="org.hibernate.spatial.dialect.postgis.PostgisDialect" />
+			<property name="hibernate.format_sql" value="true" />
+			<property name="hibernate.show_sql" value="false" />
 			<property name="hibernate.generate_statistics" value="false" />
 		</properties>
 	</persistence-unit>

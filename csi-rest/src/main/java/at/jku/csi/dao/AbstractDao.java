@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
+import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
@@ -17,14 +17,16 @@ public abstract class AbstractDao<T extends BaseEntity> implements Serializable 
 
 	protected static final int FETCH_SIZE = 5;
 
+	@PersistenceContext(unitName = "csiSA")
+	protected EntityManager entityManager;
 	@Inject
-	EntityManager entityManager;
+	private DaoHelperService daoHelperService;
 	
 	@Transactional(value = TxType.MANDATORY)
 	public T save(T entity) {
 		return entityManager.merge(entity);
 	}
-	
+
 	@Transactional(value = TxType.MANDATORY)
 	public List<T> saveAll(List<T> entities) {
 		List<T> savedEntities = new ArrayList<>();
@@ -35,15 +37,11 @@ public abstract class AbstractDao<T extends BaseEntity> implements Serializable 
 	}
 
 	protected <S> List<S> getResultList(CriteriaQuery<S> query) {
-		return entityManager.createQuery(query).getResultList();
+		return daoHelperService.getResultList(entityManager.createQuery(query));
 	}
 
 	protected <S> S getSingleResult(CriteriaQuery<S> query) {
-		try {
-			return entityManager.createQuery(query).getSingleResult();
-		} catch (NoResultException ex) {
-			return null;
-		}
+		return daoHelperService.getSingleResult(entityManager.createQuery(query));
 	}
 
 }
