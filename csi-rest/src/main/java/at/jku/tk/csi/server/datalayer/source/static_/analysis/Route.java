@@ -18,8 +18,11 @@ public class Route implements Serializable {
 	@Column(name = "gid")
 	private long ID;
 
-	@Column(name = "rn", nullable = true)
+	@Column(name = "rn", nullable = false)
 	private String road_code;
+
+	@Column(name = "shape_len", nullable = false)
+	double length;
 
 	@Column(name = "geom84", columnDefinition = "geometry(LineString,4326)")
 	private Geometry geometry;
@@ -32,10 +35,18 @@ public class Route implements Serializable {
 		this.ID = ID;
 	}
 
+	public double getLength() {
+		return length;
+	}
+
+	public void setLength(double length) {
+		this.length = length;
+	}
+
 	public String getRoad_code() {
 		return road_code;
 	}
-	
+
 	public void setRoad_code(String road_code) {
 		this.road_code = road_code;
 	}

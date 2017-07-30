@@ -1,0 +1,12 @@
+1. geolocation 
+
+2. Menüpunkte
+	SituationEvolutionType
+		Tabelle mit Filter
+		bei Klick auf Type, neu Seite mit Map(mit vor und zurück von SituationInstances), Graph(optional) und Tabelle der Message (wie in Power Point)
+	TrafficMessageType
+		Tabelle mit Filter
+		bei Klick auf Type, neue Seite mit Map mit allen TrafficMessages 
+	EnovlingType
+		Tabelle mit Filter
+	

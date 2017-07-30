@@ -1,6 +1,7 @@
 package at.jku.csi.service;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -116,7 +117,9 @@ public class SpatialHelper implements Serializable {
 	}
 
 	private Coordinate[] concat(Coordinate[] coordinates, Coordinate[] coordinates2) {
-		List<Coordinate[]> asList = Arrays.asList(coordinates, coordinates2);
+		List<Coordinate> asList = new ArrayList<Coordinate>();
+		asList.addAll(Arrays.asList(coordinates));
+		asList.addAll(Arrays.asList(coordinates2));
 		return asList.toArray(new Coordinate[coordinates.length + coordinates2.length]);
 	}
 }

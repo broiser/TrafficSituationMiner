@@ -2,6 +2,7 @@ package at.jku.csi.rest;
 
 import static java.util.stream.Collectors.toList;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Stream;
@@ -57,6 +58,7 @@ public class ObjectTypeRestService implements RestService {
 
 	private List<ObjectType> createObjectTypesByDateRange(Date from, Date to) {
 		Stream<Integer> situationIds = asfinagTrafficmessageService.findSituationIds(from, to).stream();
+		situationIds.forEach(situationId -> createObjectTypesBySituationId(situationId));
 		return situationIds.flatMap(situationId -> createObjectTypesBySituationId(situationId).stream())
 				.collect(toList());
 	}
@@ -67,6 +69,9 @@ public class ObjectTypeRestService implements RestService {
 
 	private List<StateInstance> findStateInstances(long situationId) {
 		SituationEvolution situationEvoution = situationEvolutionService.findSituationEvoution(situationId);
+		if (situationEvoution == null){
+			return new ArrayList<>();
+		}
 		return situationEvoution.getStateInstance().stream().sorted(stateInstanceComparator).collect(toList());
 	}
 }

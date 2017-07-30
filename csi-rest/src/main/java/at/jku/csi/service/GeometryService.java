@@ -25,7 +25,7 @@ public class GeometryService implements Serializable {
 		if (route == null) {
 			return null;
 		}
-		double length = route.getGeometry().getLength();
+		double length = route.getLength();
 		double beginmeter = asfinagTrafficmessage.getBeginmeter() / 1.0;
 		double endmeter = asfinagTrafficmessage.getEndmeter() / 1.0;
 		LineString routeLineString = getLineStringFromGeometry(route);
