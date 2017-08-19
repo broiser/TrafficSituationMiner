@@ -3,3 +3,43 @@ body {
 	min-height: 2000px;
 	padding-top: 70px;
 }
+
+.clickable {
+	cursor: pointer;
+}
+
+tr.loading-wrapper {
+	height: 60px;
+}
+
+tr.loading-wrapper td{
+	left: 50%; 
+	border: 0 !important;
+	margin-left: -25px;
+	position: absolute; 
+}
+
+tr.loading-wrapper .loader {
+  border: 5px solid #f3f3f3;
+  -webkit-animation: spin 1s linear infinite;
+  animation: spin 1s linear infinite;
+  border-top: 5px solid #555;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+}
+
+
+@-webkit-keyframes spin {
+  0% { 
+    -webkit-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+
+  100% {
+    -webkit-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}

@@ -26,6 +26,22 @@ public class EvolvingObjectService implements Serializable {
 	@Inject
 	private DurationCalculator durationCalculator;
 
+	public long count() {
+		return evolvingObjectDao.count();
+	}
+
+	public EvolvingObject findById(int id) {
+		return evolvingObjectDao.findById(id);
+	}
+
+	public List<EvolvingObject> findAll() {
+		return evolvingObjectDao.findAll();
+	}
+	
+	public List<EvolvingObject> findAll(int page, int pageSize){
+		return evolvingObjectDao.findAll(page, pageSize);
+	}
+
 	@Transactional
 	public EvolvingObject createEvolvingObject(List<AsfinagTrafficmessage> trafficmessages) {
 		EvolvingObject evolvingObject = evolvingObjectDao.save(buildEvolvingObject(trafficmessages));

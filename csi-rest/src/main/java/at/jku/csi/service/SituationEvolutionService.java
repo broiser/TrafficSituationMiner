@@ -28,16 +28,28 @@ public class SituationEvolutionService implements Serializable {
 	@Inject
 	private DurationCalculator durationCalculator;
 	@Inject
+	private StateInstanceComparator stateInstanceComparator;
+	@Inject
 	private DiscreteStateInstanceService discreteStateInstanceService;
 	@Inject
 	private AsfinagTrafficmessageService asfinagTrafficmessageService;
-	@Inject
-	private StateInstanceComparator stateInstanceComparator;
 
-	public SituationEvolution findSituationEvoution(long situationId) {
-		return situationEvolutionDao.findSituationEvolution(situationId);
+	public long count() {
+		return situationEvolutionDao.count();
 	}
 	
+	public SituationEvolution findById(int id) {
+		return situationEvolutionDao.findById(id);
+	}
+
+	public SituationEvolution findBySituationId(long situationId) {
+		return situationEvolutionDao.findBySituationId(situationId);
+	}
+
+	public List<SituationEvolution> findAll(int page, int pageSize) {
+		return situationEvolutionDao.findAll(page, pageSize);
+	}
+
 	@Transactional
 	public SituationEvolution createSituationEvolution(int situationId) {
 		List<DiscreteStateInstance> discreteStateInstances = createDiscreteStateInstances(situationId);
@@ -78,7 +90,7 @@ public class SituationEvolutionService implements Serializable {
 
 	private List<AsfinagTrafficmessage> findAsfinagTrafficmessagesBySituationId(int situationId) {
 		return filterDupliatedAsfinagTrafficmessage(
-				asfinagTrafficmessageService.findAsfinagTrafficmessagesBySituationId(situationId));
+				asfinagTrafficmessageService.findBySituationId(situationId));
 	}
 
 	private List<AsfinagTrafficmessage> filterDupliatedAsfinagTrafficmessage(
@@ -117,5 +129,4 @@ public class SituationEvolutionService implements Serializable {
 					+ trafficmessage.getBegintime().hashCode() + trafficmessage.getDatex_phr().hashCode();
 		}
 	}
-
 }

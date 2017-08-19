@@ -15,8 +15,11 @@ import javax.ws.rs.core.Response;
 
 import at.jku.csi.cdi.Service;
 import at.jku.csi.marschaller.DateMarshaller;
+import at.jku.csi.rest.model.PageResult;
 import at.jku.csi.service.AsfinagTrafficmessageService;
 import at.jku.csi.service.EvolvingObjectService;
+import at.jku.csi.service.dto.EvolvingObjectDTOConverter;
+import at.jku.csi.service.model.dto.EvolvingObjectDTO;
 import at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.EvolvingObject;
 import at.jku.tk.csi.server.datalayer.source.dynamic_.asfinag.AsfinagTrafficmessage;
 
@@ -30,16 +33,27 @@ public class EvolvingObjectRestService implements RestService {
 	@Inject
 	private EvolvingObjectService evolvingObjectService;
 	@Inject
+	private EvolvingObjectDTOConverter evolvingObjectDTOConverter;
+	@Inject
 	private AsfinagTrafficmessageService asfinagTrafficmessageService;
 
 	@GET
-	@Path("{vmis_id}")
-	public Response getEvolvingObject(@PathParam("vmis_id") int vmisId) {
-		return Response.ok(createEvolvingObject(vmisId)).build();
+	@Path("{id}")
+	public Response getEvolvingObject(@PathParam("id") int id) {
+		EvolvingObject evolvingObject = evolvingObjectService.findById(id);
+		return Response.ok(evolvingObjectDTOConverter.apply(evolvingObject)).build();
 	}
 
 	@GET
-	@Path("{fromDate}/{toDate}")
+	@Path("{page}/{pageSize}")
+	public Response getEvolvingObjects(@PathParam("page") int page, @PathParam("pageSize") int pageSize) {
+		List<EvolvingObject> evolvingObjects = evolvingObjectService.findAll(page, pageSize);
+		List<EvolvingObjectDTO> evolvingObjectDTOs = evolvingObjectDTOConverter.apply(evolvingObjects);
+		return Response.ok(new PageResult(evolvingObjectDTOs, evolvingObjectService.count())).build();
+	}
+
+	@GET
+	@Path("build/{fromDate}/{toDate}")
 	public Response getEvolvingObjects(@PathParam("fromDate") String fromDate, @PathParam("toDate") String toDate)
 			throws Exception {
 		Date from = dateMarshaller.unmarshal(fromDate);
@@ -54,7 +68,7 @@ public class EvolvingObjectRestService implements RestService {
 
 	private EvolvingObject createEvolvingObject(int vmisId) {
 		List<AsfinagTrafficmessage> trafficmessages = asfinagTrafficmessageService
-				.findAsfinagTrafficmessagesByVmisId(vmisId);
+				.findByVmisId(vmisId);
 		return evolvingObjectService.createEvolvingObject(trafficmessages);
 	}
 

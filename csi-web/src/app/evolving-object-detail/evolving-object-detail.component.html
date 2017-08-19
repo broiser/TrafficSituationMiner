@@ -1,0 +1,45 @@
+<div>
+	<table class="table table-condensed table-striped ">
+		<tr *ngIf="loadingImageVisible" class="loading-wrapper">
+			<td><div class="loader"></div></td>
+		</tr>
+		<ng-template [ngIf]="!loadingImageVisible">
+			<tr>
+				<th>ID</th>
+				<td>{{evolvingObject.id}}</td>
+			</tr>
+			<tr>
+				<th>vmis_id</th>
+				<td>{{evolvingObject.vmis_id}}</td>
+			</tr>
+			<tr>
+				<th>nrSpatialEvolutions</th>
+				<td>{{evolvingObject.nrSpatialEvolutions}}</td>
+			</tr>
+			<tr>
+				<th>nrPHRchanges</th>
+				<td>{{evolvingObject.nrPHRchanges}}</td>
+			</tr>
+			<tr>
+				<th>nrUpdates</th>
+				<td>{{evolvingObject.nrUpdates}}</td>
+			</tr>
+			<tr>
+				<th>duration</th>
+				<td>{{evolvingObject.duration}}</td>
+			</tr>
+			<tr>
+				<th>sources</th>
+				<td>{{evolvingObject.sources}}</td>
+			</tr>
+			<tr>
+				<th>evoSequence</th>
+				<td>{{evolvingObject.evoSequence}}</td>
+			</tr>
+		</ng-template>
+	</table>
+</div>
+<div *ngIf="evolvingObject && !loadingImageVisible">
+	<app-asfinage-trafficmessage-list
+		[asfinagTrafficmessages]="evolvingObject.asfinagTrafficmessages"></app-asfinage-trafficmessage-list>
+</div>

@@ -9,6 +9,8 @@ import java.util.List;
 import javax.inject.Inject;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.linearref.LinearLocation;
@@ -20,6 +22,21 @@ public class SpatialHelper implements Serializable {
 
 	@Inject
 	private GeometryFactory geometryFactory;
+
+	public Geometry getBoundingBox(List<Geometry> geometries) {
+		double p = 0.2, delta = 0.01;
+		Geometry geometry = geometryFactory.buildGeometry(geometries);
+		Envelope envelope = geometry.getEnvelopeInternal();
+		double height = envelope.getHeight();
+		double width = envelope.getWidth();
+		delta = p * Math.max(height, width);
+		if (delta == 0) {
+			delta = 0.001;
+		}
+		geometry = geometry.convexHull();
+		geometry = geometry.buffer(delta);
+		return geometry;
+	}
 
 	public LineString getSubLineString(LineString l, double from, double to) {
 		boolean reverse = false;

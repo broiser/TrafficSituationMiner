@@ -58,7 +58,6 @@ public class ObjectTypeRestService implements RestService {
 
 	private List<ObjectType> createObjectTypesByDateRange(Date from, Date to) {
 		Stream<Integer> situationIds = asfinagTrafficmessageService.findSituationIds(from, to).stream();
-		situationIds.forEach(situationId -> createObjectTypesBySituationId(situationId));
 		return situationIds.flatMap(situationId -> createObjectTypesBySituationId(situationId).stream())
 				.collect(toList());
 	}
@@ -68,8 +67,8 @@ public class ObjectTypeRestService implements RestService {
 	}
 
 	private List<StateInstance> findStateInstances(long situationId) {
-		SituationEvolution situationEvoution = situationEvolutionService.findSituationEvoution(situationId);
-		if (situationEvoution == null){
+		SituationEvolution situationEvoution = situationEvolutionService.findBySituationId(situationId);
+		if (situationEvoution == null) {
 			return new ArrayList<>();
 		}
 		return situationEvoution.getStateInstance().stream().sorted(stateInstanceComparator).collect(toList());

@@ -1,0 +1,32 @@
+<div>
+	<table class="table table-condensed table-striped ">
+		<tr *ngIf="loadingImageVisible" class="loading-wrapper">
+			<td><div class="loader"></div></td>
+		</tr>
+		<ng-template [ngIf]="!loadingImageVisible">
+			<tr>
+				<th></th>
+				<th>ID</th>
+				<th>situation_id</th>
+				<th>evolutionSequence</th>
+				<th>totalDuration</th>
+				<th>evoSteps</th>
+				<th>majorEvoSteps</th>
+			</tr>
+			<tr *ngFor="let situationEvolution of situationEvolutions">
+				<td><a
+					[routerLink]="['/situationEvolution', situationEvolution.id]"
+					class="glyphicon glyphicon-file" aria-hidden="true"></a></td>
+				<td>{{situationEvolution.id}}</td>
+				<td>{{situationEvolution.situation_id}}</td>
+				<td>{{situationEvolution.evolutionSequence}}</td>
+				<td>{{situationEvolution.totalDuration}}</td>
+				<td>{{situationEvolution.evoSteps}}</td>
+				<td>{{situationEvolution.majorEvoSteps}}</td>
+			</tr>
+		</ng-template>
+	</table>
+	<app-pagination [pagesToShow]="5" [page]="page" [perPage]="pageSize"
+		[count]="count" [loading]="loadingImageVisible"
+		(goPage)="onSituationEvolutionsLoading($event)"></app-pagination>
+</div>

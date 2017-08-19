@@ -15,6 +15,11 @@ public class DaoHelperService implements Serializable {
 		return query.getResultList();
 	}
 
+	public <S> List<S> getResultList(TypedQuery<S> query, int page, int pageSize) {
+		int firstResult = Math.max((page - 1), 0) * pageSize;
+		return getResultList(query.setFirstResult(firstResult).setMaxResults(pageSize));
+	}
+
 	public <S> S getSingleResult(TypedQuery<S> query) {
 		try {
 			return query.getSingleResult();

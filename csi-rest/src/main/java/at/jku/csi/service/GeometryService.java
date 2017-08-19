@@ -1,9 +1,11 @@
 package at.jku.csi.service;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.inject.Inject;
 
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
 
@@ -38,5 +40,9 @@ public class GeometryService implements Serializable {
 
 	private Route findRoute(AsfinagTrafficmessage asfinagTrafficmessage) {
 		return routeDao.findRouteByRoadname(asfinagTrafficmessage.getRoad_code());
+	}
+
+	public Geometry generateSituationGeometry(List<Geometry> geometries) {
+		return spatialHelper.getBoundingBox(geometries);
 	}
 }

@@ -56,11 +56,11 @@ public class EvolvingObject extends BaseEntity {
 	@org.hibernate.annotations.Cascade({ org.hibernate.annotations.CascadeType.SAVE_UPDATE,
 			org.hibernate.annotations.CascadeType.LOCK })
 	@JoinColumns({ @JoinColumn(name = "EvolvingObjectID", nullable = true) })
-	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.TRUE)
+	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)
 	private Set<AsfinagTrafficmessage> asfinagTrafficmessage = new HashSet<AsfinagTrafficmessage>();
 
 	public void setVmis_id(int value) {
-		this.vmis_id = value;
+		this.vmis_id = value;	
 	}
 
 	public int getVmis_id() {

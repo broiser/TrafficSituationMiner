@@ -12,7 +12,11 @@ import at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.Transitio
 public class TransitionTypeDao extends AbstractDao<TransitionType> {
 
 	private static final String TRANSITION_SEQUENCE = "transitionSequence";
-	
+
+	public TransitionTypeDao() {
+		super(TransitionType.class);
+	}
+
 	public TransitionType findTransitionType(String transitionSequence) {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<TransitionType> query = builder.createQuery(TransitionType.class);
@@ -20,5 +24,4 @@ public class TransitionTypeDao extends AbstractDao<TransitionType> {
 		Predicate predicate = builder.equal(root.get(TRANSITION_SEQUENCE), transitionSequence);
 		return getSingleResult(query.select(root).where(predicate));
 	}
-	
 }

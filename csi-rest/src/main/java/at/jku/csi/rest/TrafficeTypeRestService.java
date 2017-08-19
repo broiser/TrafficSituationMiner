@@ -1,5 +1,7 @@
 package at.jku.csi.rest;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,16 +29,17 @@ public class TrafficeTypeRestService implements RestService {
 	private AsfinagTrafficmessageService asfinagTrafficemessageService;
 
 	@GET
+	@Path("all")
 	public Response getTrafficTypes() {
 		List<TrafficType> trafficTypes = new ArrayList<>();
 
-		List<Tuple> tuples = asfinagTrafficemessageService.findTrafficTypeTuples();
+		List<Tuple> tuples = asfinagTrafficemessageService.findTrafficTypes();
 		for (Tuple tuple : tuples) {
 			String type = tuple.get(0, String.class);
 			String messageText = tuple.get(1, String.class);
 			trafficTypes.add(findOrCreateTrafficType(type, messageText));
 		}
-		return Response.ok(trafficTypes).build();
+		return Response.ok(trafficTypes.stream().distinct().collect(toList())).build();
 	}
 
 	private TrafficType findOrCreateTrafficType(String type, String messageText) {

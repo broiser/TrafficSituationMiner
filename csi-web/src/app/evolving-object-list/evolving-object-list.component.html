@@ -1,0 +1,36 @@
+<div>
+	<table class="table table-condensed table-striped ">
+		<tr *ngIf="loadingImageVisible" class="loading-wrapper">
+			<td><div class="loader"></div></td>
+		</tr>
+		<ng-template [ngIf]="!loadingImageVisible">
+			<tr>
+				<th></th>
+				<th>ID</th>
+				<th>vmis_id</th>
+				<th>nrSpatialEvolutions</th>
+				<th>nrPHRchanges</th>
+				<th>nrUpdates</th>
+				<th>duration</th>
+				<th>sources</th>
+				<th>evoSequence</th>
+			</tr>
+			<tr
+				*ngFor="let evolvingObject of evolvingObjects | search:evoSequence:'evoSequence'">
+				<td><a [routerLink]="['/evolvingObject', evolvingObject.id]"
+					class="glyphicon glyphicon-file" aria-hidden="true"></a></td>
+				<td>{{evolvingObject.id}}</td>
+				<td>{{evolvingObject.vmis_id}}</td>
+				<td>{{evolvingObject.nrSpatialEvolutions}}</td>
+				<td>{{evolvingObject.nrPHRchanges}}</td>
+				<td>{{evolvingObject.nrUpdates}}</td>
+				<td>{{evolvingObject.duration}}</td>
+				<td>{{evolvingObject.sources}}</td>
+				<td>{{evolvingObject.evoSequence}}</td>
+			</tr>
+		</ng-template>
+	</table>
+	<app-pagination [pagesToShow]="5" [page]="page" [perPage]="pageSize"
+		[count]="count" [loading]="loadingImageVisible"
+		(goPage)="onEvolvingObjectsLoading($event)"></app-pagination>
+</div>

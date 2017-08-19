@@ -17,6 +17,18 @@ public class AsfinagTrafficmessageService implements Serializable {
 	@Inject
 	private AsfinagTrafficmessageDao asfinagTrafficmessageDao;
 
+	public AsfinagTrafficmessage findById(int id) {
+		return asfinagTrafficmessageDao.findById(id);
+	}
+
+	public List<AsfinagTrafficmessage> findByVmisId(int vmisId) {
+		return asfinagTrafficmessageDao.findByVmisId(vmisId);
+	}
+
+	public List<AsfinagTrafficmessage> findBySituationId(int situationId) {
+		return asfinagTrafficmessageDao.findBySituationId(situationId);
+	}
+
 	public List<Integer> findSituationIds(Date from, Date to) {
 		return asfinagTrafficmessageDao.findSituationIds(from, to);
 	}
@@ -25,20 +37,7 @@ public class AsfinagTrafficmessageService implements Serializable {
 		return asfinagTrafficmessageDao.findVmisIds(from, to);
 	}
 
-	public AsfinagTrafficmessage findAsfinagTrafficmessageById(int asfinagTrafficmessageId) {
-		return asfinagTrafficmessageDao.findAsfinagTrafficmessageById(asfinagTrafficmessageId);
+	public List<Tuple> findTrafficTypes() {
+		return asfinagTrafficmessageDao.findTrafficTypes();
 	}
-
-	public List<AsfinagTrafficmessage> findAsfinagTrafficmessagesByVmisId(int vmisId) {
-		return asfinagTrafficmessageDao.findAsfinagTrafficsByVmisId(vmisId);
-	}
-
-	public List<AsfinagTrafficmessage> findAsfinagTrafficmessagesBySituationId(int situationId) {
-		return asfinagTrafficmessageDao.findAsfinagTrafficsBySituationId(situationId);
-	}
-
-	public List<Tuple> findTrafficTypeTuples() {
-		return asfinagTrafficmessageDao.findTrafficTypeTuples();
-	}
-
 }

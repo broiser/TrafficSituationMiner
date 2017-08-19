@@ -1,0 +1,32 @@
+<div *ngIf="asfinagTrafficmessages">
+	<table class="table table-condensed table-striped ">
+		<tr>
+			<th>ID</th>
+			<th>begintime</th>
+			<th>endtime</th>
+			<th>beginmeter</th>
+			<th>endmeter</th>
+			<th>datex_mse</th>
+			<th>datex_dst</th>
+			<th>datex_phr</th>
+			<th>vmis_id</th>
+			<th>road_code</th>
+			<th>importDate</th>
+			<th>updateDate</th>
+		</tr>
+		<tr *ngFor="let trafficmessage of asfinagTrafficmessages">
+			<td>{{trafficmessage.id}}</td>
+			<td>{{trafficmessage.begintime | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+			<td>{{trafficmessage.endtime | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+			<td>{{trafficmessage.beginmeter}}</td>
+			<td>{{trafficmessage.endmeter}}</td>
+			<td>{{trafficmessage.datex_mse}}</td>
+			<td>{{trafficmessage.datex_dst}}</td>
+			<td>{{trafficmessage.datex_phr}}</td>
+			<td>{{trafficmessage.vmis_id}}</td>
+			<td>{{trafficmessage.road_code}}</td>
+			<td>{{trafficmessage.importDate | date: 'dd/MM/yyyy' }}</td>
+			<td>{{trafficmessage.updateDate | date: 'dd/MM/yyyy' }}</td>
+		</tr>
+	</table>
+</div>

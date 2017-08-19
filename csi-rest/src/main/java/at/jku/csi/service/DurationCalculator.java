@@ -23,6 +23,9 @@ public class DurationCalculator implements Serializable {
 
 	public double calculateDuration(AsfinagTrafficmessage firstTrafficmessage,
 			AsfinagTrafficmessage lastTrafficmessage) {
+		if (firstTrafficmessage.getBegintime() == null || lastTrafficmessage.getBegintime() == null){
+			return -1;
+		}
 		return noramlize(lastTrafficmessage.getBegintime().getTime() - firstTrafficmessage.getBegintime().getTime());
 	}
 

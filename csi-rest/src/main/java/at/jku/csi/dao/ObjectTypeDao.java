@@ -11,6 +11,10 @@ import at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.ObjectTyp
 @Dao
 public class ObjectTypeDao extends AbstractDao<ObjectType> {
 
+	public ObjectTypeDao() {
+		super(ObjectType.class);
+	}
+
 	public ObjectType findObjectType(String alias, int situationStateTypeId) {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<ObjectType> query = builder.createQuery(ObjectType.class);

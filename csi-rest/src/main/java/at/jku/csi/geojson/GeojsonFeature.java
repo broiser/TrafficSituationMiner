@@ -1,6 +1,5 @@
-package at.jku.csi.geoJson;
+package at.jku.csi.geojson;
 
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -12,7 +11,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import at.jku.csi.marschaller.GeometryDeserializer;
 import at.jku.csi.marschaller.GeometrySerializer;
 
-public class GeoJsonFeature implements Serializable {
+public class GeojsonFeature implements GeojsonObject {
 
     @JsonSerialize(using = GeometrySerializer.class)
     @JsonDeserialize(using = GeometryDeserializer.class)
@@ -42,9 +41,9 @@ public class GeoJsonFeature implements Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof GeoJsonFeature)) {
+        if (!(obj instanceof GeojsonFeature)) {
             return false;
         }
-        return ((GeoJsonFeature) obj).geometry.equals(geometry);
+        return ((GeojsonFeature) obj).geometry.equals(geometry);
     }
 }

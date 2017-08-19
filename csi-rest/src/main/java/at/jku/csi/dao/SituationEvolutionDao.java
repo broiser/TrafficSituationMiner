@@ -12,11 +12,14 @@ public class SituationEvolutionDao extends AbstractDao<SituationEvolution> {
 
 	private static final String SITUATION_ID = "situation_id";
 
-	public SituationEvolution findSituationEvolution(long situationId) {
+	public SituationEvolutionDao() {
+		super(SituationEvolution.class);
+	}
+
+	public SituationEvolution findBySituationId(long situationId) {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<SituationEvolution> query = builder.createQuery(SituationEvolution.class);
 		Root<SituationEvolution> root = query.from(SituationEvolution.class);
 		return getSingleResult(query.where(builder.equal(root.get(SITUATION_ID), situationId)));
 	}
-
 }

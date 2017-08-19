@@ -13,6 +13,10 @@ public class SituationStateTypeDao extends AbstractDao<SituationStateType> {
 
 	private static final String NAME = "name";
 
+	public SituationStateTypeDao() {
+		super(SituationStateType.class);
+	}
+
 	public SituationStateType findSituationStateType(String name) {
 		CriteriaBuilder builder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<SituationStateType> query = builder.createQuery(SituationStateType.class);

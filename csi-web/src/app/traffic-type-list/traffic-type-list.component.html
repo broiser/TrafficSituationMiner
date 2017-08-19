@@ -1,3 +1,23 @@
-<p>
-  traffic-type-list works!
-</p>
+<div>
+	<input type="text" [(ngModel)]="type" style="width: 100%">
+</div>
+<hr />
+<div>
+	<table class="table table-condensed table-striped ">
+		<tr *ngIf="loadingImageVisible" class="loading-wrapper">
+			<td [colSpan]="3"><div class="loader"></div></td>
+		</tr>
+		<ng-template [ngIf]="!loadingImageVisible">
+			<tr>
+				<th [width]="80">ID</th>
+				<th [width]="80">Type</th>
+				<th>MessageText</th>
+			</tr>
+			<tr *ngFor="let trafficType of trafficTypes | search:type:'type'">
+				<td [width]="80">{{trafficType.id}}</td>
+				<td [width]="80">{{trafficType.type}}</td>
+				<td>{{trafficType.messageText}}</td>
+			</tr>
+		</ng-template>
+	</table>
+</div>

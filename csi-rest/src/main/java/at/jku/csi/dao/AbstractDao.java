@@ -15,13 +15,20 @@ import at.jku.tk.csi.entity.BaseEntity;
 
 public abstract class AbstractDao<T extends BaseEntity> implements Serializable {
 
-	protected static final int FETCH_SIZE = 5;
-
 	@PersistenceContext(unitName = "csiSA")
 	protected EntityManager entityManager;
+
+	@Inject
+	private DaoQueryService daoQueryService;
 	@Inject
 	private DaoHelperService daoHelperService;
-	
+
+	private Class<T> responseClass;
+
+	public AbstractDao(Class<T> responseClass) {
+		this.responseClass = responseClass;
+	}
+
 	@Transactional(value = TxType.MANDATORY)
 	public T save(T entity) {
 		return entityManager.merge(entity);
@@ -34,6 +41,26 @@ public abstract class AbstractDao<T extends BaseEntity> implements Serializable 
 			savedEntities.add(save(entity));
 		}
 		return savedEntities;
+	}
+
+	public T findById(int id) {
+		return entityManager.find(responseClass, id);
+	}
+
+	public List<T> findAll() {
+		return getResultList(daoQueryService.buildFindAllQuery(entityManager, responseClass));
+	}
+
+	public List<T> findAll(int page, int pageSize) {
+		return getResultList(daoQueryService.buildFindAllQuery(entityManager, responseClass), page, pageSize);
+	}
+
+	public long count() {
+		return getSingleResult(daoQueryService.buildCountQuery(entityManager, responseClass));
+	}
+
+	private <S> List<S> getResultList(CriteriaQuery<S> query, int page, int pageSize) {
+		return daoHelperService.getResultList(entityManager.createQuery(query), page, pageSize);
 	}
 
 	protected <S> List<S> getResultList(CriteriaQuery<S> query) {

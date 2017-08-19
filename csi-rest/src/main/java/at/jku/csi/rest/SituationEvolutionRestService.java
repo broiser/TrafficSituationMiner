@@ -15,8 +15,11 @@ import javax.ws.rs.core.Response;
 
 import at.jku.csi.cdi.Service;
 import at.jku.csi.marschaller.DateMarshaller;
+import at.jku.csi.rest.model.PageResult;
 import at.jku.csi.service.AsfinagTrafficmessageService;
 import at.jku.csi.service.SituationEvolutionService;
+import at.jku.csi.service.dto.SituationEvolutionDTOConverter;
+import at.jku.csi.service.model.dto.SituationEvolutionDTO;
 import at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.SituationEvolution;
 
 @Service
@@ -29,16 +32,27 @@ public class SituationEvolutionRestService implements RestService {
 	@Inject
 	private SituationEvolutionService situationEvolutionService;
 	@Inject
+	private SituationEvolutionDTOConverter situationEvolutionDTOConverter;
+	@Inject
 	private AsfinagTrafficmessageService asfinagTrafficmessageService;
 
 	@GET
-	@Path("{situationId}")
-	public Response getSituationEvolution(@PathParam("situationId") int situationId) {
-		return Response.ok(createSituationEvolution(situationId)).build();
+	@Path("{id}")
+	public Response getSituationEvolution(@PathParam("id") int id) {
+		SituationEvolution situationEvolution = situationEvolutionService.findById(id);
+		return Response.ok(situationEvolutionDTOConverter.apply(situationEvolution)).build();
 	}
 
 	@GET
-	@Path("{fromDate}/{toDate}")
+	@Path("{page}/{pageSize}")
+	public Response getSituationEvolutions(@PathParam("page") int page, @PathParam("pageSize") int pageSize) {
+		List<SituationEvolution> situationEvolutions = situationEvolutionService.findAll(page, pageSize);
+		List<SituationEvolutionDTO> situationEvolutionDTOs = situationEvolutionDTOConverter.apply(situationEvolutions);
+		return Response.ok(new PageResult(situationEvolutionDTOs, situationEvolutionService.count())).build();
+	}
+
+	@GET
+	@Path("/build/{fromDate}/{toDate}")
 	public Response getSituationEvolutions(@PathParam("fromDate") String fromDate, @PathParam("toDate") String toDate)
 			throws Exception {
 		Date from = dateMarshaller.unmarshal(fromDate);

@@ -6,4 +6,8 @@ import at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.DiscreteS
 @Dao
 public class DiscreteStateInstanceDao extends AbstractDao<DiscreteStateInstance> {
 
+	public DiscreteStateInstanceDao() {
+		super(DiscreteStateInstance.class);
+	}
+
 }

@@ -1,0 +1,28 @@
+<div *ngIf="stateInstances">
+	<table class="table table-condensed table-striped ">
+		<tr>
+			<th>ID</th>
+			<th>name</th>
+			<th>situationStateType.name</th>
+			<th>situationStateType.type</th>
+			<th>duration</th>
+			<th>beginTime</th>
+		</tr>
+		<ng-template ngFor let-stateInstance
+			[ngForOf]="stateInstances | sortBy : 'beginTime'">
+			<tr class="clickable" [attr.data-toggle]="'collapse'"
+				[attr.data-target]="'#accordion-' +stateInstance.id">
+				<td>{{stateInstance.id}}</td>
+				<td>{{stateInstance.name}}</td>
+				<td>{{stateInstance.situationStateType.name}}</td>
+				<td>{{stateInstance.situationStateType.type}}</td>
+				<td>{{stateInstance.duration}}</td>
+				<td>{{stateInstance.beginTime | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+			</tr>
+			<tr [attr.id]="'accordion-' + stateInstance.id" class="collapse">
+				<td [colSpan]="6"><app-asfinage-trafficmessage-list
+						[asfinagTrafficmessages]="stateInstance.asfinagTrafficmessages"></app-asfinage-trafficmessage-list></td>
+			</tr>
+		</ng-template>
+	</table>
+</div>

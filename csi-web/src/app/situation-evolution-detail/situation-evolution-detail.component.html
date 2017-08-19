@@ -1,0 +1,42 @@
+<div>
+	<table class="table table-condensed table-striped ">
+		<tr *ngIf="loadingImageVisible" class="loading-wrapper">
+			<td><div class="loader"></div></td>
+		</tr>
+		<ng-template [ngIf]="!loadingImageVisible">
+		<tr>
+			<th>ID</th>
+			<td>{{situationEvolution.id}}</td>
+		</tr>
+		<tr>
+			<th>situation_id</th>
+			<td>{{situationEvolution.situation_id}}</td>
+		</tr>
+		<tr>
+			<th>evolutionSequence</th>
+			<td>{{situationEvolution.evolutionSequence}}</td>
+		</tr>
+		<tr>
+			<th>totalDuration</th>
+			<td>{{situationEvolution.totalDuration}}</td>
+		</tr>
+		<tr>
+			<th>evoSteps</th>
+			<td>{{situationEvolution.evoSteps}}</td>
+		</tr>
+		<tr>
+			<th>majorEvoSteps</th>
+			<td>{{situationEvolution.majorEvoSteps}}</td>
+		</tr>
+		</ng-template>
+	</table>
+</div>
+<div *ngIf="situationEvolution && !loadingImageVisible">
+	<h4>stateInstances</h4>
+	<app-state-instance-list
+		[stateInstances]="situationEvolution.stateInstances"></app-state-instance-list>
+	<app-state-instance-graph
+		[stateInstances]="situationEvolution.stateInstances"></app-state-instance-graph>
+	<app-state-instance-map [situationEvolutionId]="situationEvolution.id"></app-state-instance-map>
+</div>
+
