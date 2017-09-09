@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -15,6 +16,7 @@ import javax.ws.rs.core.Response;
 
 import at.jku.csi.cdi.Service;
 import at.jku.csi.marschaller.DateMarshaller;
+import at.jku.csi.rest.model.Filter;
 import at.jku.csi.rest.model.PageResult;
 import at.jku.csi.service.AsfinagTrafficmessageService;
 import at.jku.csi.service.EvolvingObjectService;
@@ -44,12 +46,13 @@ public class EvolvingObjectRestService implements RestService {
 		return Response.ok(evolvingObjectDTOConverter.apply(evolvingObject)).build();
 	}
 
-	@GET
+	@POST
 	@Path("{page}/{pageSize}")
-	public Response getEvolvingObjects(@PathParam("page") int page, @PathParam("pageSize") int pageSize) {
-		List<EvolvingObject> evolvingObjects = evolvingObjectService.findAll(page, pageSize);
+	public Response getEvolvingObjects(@PathParam("page") int page, @PathParam("pageSize") int pageSize,
+			List<Filter> filters) {
+		List<EvolvingObject> evolvingObjects = evolvingObjectService.findAll(page, pageSize, filters);
 		List<EvolvingObjectDTO> evolvingObjectDTOs = evolvingObjectDTOConverter.apply(evolvingObjects);
-		return Response.ok(new PageResult(evolvingObjectDTOs, evolvingObjectService.count())).build();
+		return Response.ok(new PageResult(evolvingObjectDTOs, evolvingObjectService.count(filters))).build();
 	}
 
 	@GET
@@ -61,15 +64,14 @@ public class EvolvingObjectRestService implements RestService {
 		return Response.ok(createEvolvingObjects(from, to)).build();
 	}
 
-	private List<EvolvingObject> createEvolvingObjects(Date from, Date to) {
+	private List<EvolvingObjectDTO> createEvolvingObjects(Date from, Date to) {
 		List<Integer> vmisIds = asfinagTrafficmessageService.findVmisIds(from, to);
 		return vmisIds.stream().map(vmisId -> createEvolvingObject(vmisId)).collect(toList());
 	}
 
-	private EvolvingObject createEvolvingObject(int vmisId) {
-		List<AsfinagTrafficmessage> trafficmessages = asfinagTrafficmessageService
-				.findByVmisId(vmisId);
-		return evolvingObjectService.createEvolvingObject(trafficmessages);
+	private EvolvingObjectDTO createEvolvingObject(int vmisId) {
+		List<AsfinagTrafficmessage> trafficmessages = asfinagTrafficmessageService.findByVmisId(vmisId);
+		return evolvingObjectDTOConverter.apply(evolvingObjectService.createEvolvingObject(trafficmessages));
 	}
 
 }

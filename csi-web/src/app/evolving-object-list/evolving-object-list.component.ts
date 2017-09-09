@@ -1,3 +1,4 @@
+import {Filter} from '../model/filter';
 import {PageResult} from '../model/page-result';
 import {Component, OnInit} from '@angular/core';
 import {EvolvingObjectService} from '../service/evolving-object.service';
@@ -10,6 +11,7 @@ export class EvolvingObjectListComponent implements OnInit {
 
   public page = 1;
   public pageSize = 25;
+  public pageFilters: Filter[] = [];
   public count: number;
 
   public evolvingObjects: any[];
@@ -23,9 +25,15 @@ export class EvolvingObjectListComponent implements OnInit {
     this.onEvolvingObjectsLoading(this.page);
   }
 
+  public onFiltersChanged(pageFilters: Filter[]): void {
+    this.pageFilters = pageFilters;
+    this.onEvolvingObjectsLoading(1);
+  }
+
   public onEvolvingObjectsLoading(page: number): void {
     this.loadingImageVisible = true;
-    this.evolvingObjectService.getEvolvingObjects(page, this.pageSize).subscribe(this.onEvolvingObjectsLoaded.bind(this));
+    this.evolvingObjectService.getEvolvingObjects(page, this.pageSize, this.pageFilters)
+      .subscribe(this.onEvolvingObjectsLoaded.bind(this));
   }
 
   private onEvolvingObjectsLoaded(pageResult: PageResult): void {

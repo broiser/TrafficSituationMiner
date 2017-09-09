@@ -44,8 +44,7 @@ public class DiscreteStateInstance extends BaseEntity {
 	private at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.SituationStateType situationStateType;
 
 	@Column(name = "BeginTime", nullable = true)
-	@Temporal(TemporalType.TIMESTAMP)
-	private java.util.Date beginTime;
+	private java.sql.Timestamp beginTime;
 
 	@Column(name = "Duration", nullable = false)
 	private double duration;
@@ -59,11 +58,11 @@ public class DiscreteStateInstance extends BaseEntity {
 	@org.hibernate.annotations.LazyCollection(org.hibernate.annotations.LazyCollectionOption.FALSE)
 	private java.util.Set<StateInstance> stateInstance = new java.util.HashSet<>();
 
-	public void setBeginTime(java.util.Date value) {
+	public void setBeginTime(java.sql.Timestamp value) {
 		this.beginTime = value;
 	}
 
-	public java.util.Date getBeginTime() {
+	public java.sql.Timestamp getBeginTime() {
 		return beginTime;
 	}
 

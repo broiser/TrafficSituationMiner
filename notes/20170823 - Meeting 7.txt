@@ -1,0 +1,27 @@
+DONE
+TrafficTypeList label for input
+situtationEvolution - Duration Filter größer bestimmten Wert
+EvolvingObject:
+- source Filter (not ATCGP, ATOE3)
+- nrSpatialEvolutions, nrPHRchanges, nrUpdates, duration: >= Wert Filter
+- evoSequence: Filter auf best. Sub-Sequences
+
+SituationEvolution:
+- totalDuration, evoSteps, majorEvoSteps: <, >=, = Wert Filter
+- evolutionSequence: wieder sub-sequences
+
+TODO
+situtationEvolutionDetail Graph - Startpunkt
+
+SituationEvolutionType erstellen -> siehe Bild
+SituationEvolutionGraph nur DiskreteStateInstances
+
+SituationEvolutionMap alle messages als LineString anzeigen
+
+
+
+doku:
+- technologien
+- class strukturen
+- archtekturbeschreibung
+- screenshots mit ein paar analysen

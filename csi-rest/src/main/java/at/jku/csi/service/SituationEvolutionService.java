@@ -3,7 +3,6 @@ package at.jku.csi.service;
 import static java.util.stream.Collectors.joining;
 import static java.util.stream.Collectors.toList;
 
-import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -13,6 +12,7 @@ import javax.transaction.Transactional;
 
 import at.jku.csi.cdi.Service;
 import at.jku.csi.comparator.StateInstanceComparator;
+import at.jku.csi.dao.AbstractDao;
 import at.jku.csi.dao.SituationEvolutionDao;
 import at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.DiscreteStateInstance;
 import at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.SituationEvolution;
@@ -20,7 +20,7 @@ import at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.StateInst
 import at.jku.tk.csi.server.datalayer.source.dynamic_.asfinag.AsfinagTrafficmessage;
 
 @Service
-public class SituationEvolutionService implements Serializable {
+public class SituationEvolutionService extends AbstractService<SituationEvolution> {
 	private static final String SEQUENCE_DELIMITER = " -> ";
 
 	@Inject
@@ -34,20 +34,8 @@ public class SituationEvolutionService implements Serializable {
 	@Inject
 	private AsfinagTrafficmessageService asfinagTrafficmessageService;
 
-	public long count() {
-		return situationEvolutionDao.count();
-	}
-	
-	public SituationEvolution findById(int id) {
-		return situationEvolutionDao.findById(id);
-	}
-
 	public SituationEvolution findBySituationId(long situationId) {
 		return situationEvolutionDao.findBySituationId(situationId);
-	}
-
-	public List<SituationEvolution> findAll(int page, int pageSize) {
-		return situationEvolutionDao.findAll(page, pageSize);
 	}
 
 	@Transactional
@@ -89,8 +77,7 @@ public class SituationEvolutionService implements Serializable {
 	}
 
 	private List<AsfinagTrafficmessage> findAsfinagTrafficmessagesBySituationId(int situationId) {
-		return filterDupliatedAsfinagTrafficmessage(
-				asfinagTrafficmessageService.findBySituationId(situationId));
+		return filterDupliatedAsfinagTrafficmessage(asfinagTrafficmessageService.findBySituationId(situationId));
 	}
 
 	private List<AsfinagTrafficmessage> filterDupliatedAsfinagTrafficmessage(
@@ -128,5 +115,10 @@ public class SituationEvolutionService implements Serializable {
 			return trafficmessage.getSituation_id().hashCode() + trafficmessage.getVmis_id().hashCode()
 					+ trafficmessage.getBegintime().hashCode() + trafficmessage.getDatex_phr().hashCode();
 		}
+	}
+
+	@Override
+	protected AbstractDao<SituationEvolution> getDao() {
+		return situationEvolutionDao;
 	}
 }

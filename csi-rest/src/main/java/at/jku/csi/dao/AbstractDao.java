@@ -11,17 +11,18 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 
+import at.jku.csi.rest.model.Filter;
 import at.jku.tk.csi.entity.BaseEntity;
 
 public abstract class AbstractDao<T extends BaseEntity> implements Serializable {
-
-	@PersistenceContext(unitName = "csiSA")
-	protected EntityManager entityManager;
 
 	@Inject
 	private DaoQueryService daoQueryService;
 	@Inject
 	private DaoHelperService daoHelperService;
+	
+	@PersistenceContext(unitName = "csiSA")
+	protected EntityManager entityManager;
 
 	private Class<T> responseClass;
 
@@ -47,16 +48,14 @@ public abstract class AbstractDao<T extends BaseEntity> implements Serializable 
 		return entityManager.find(responseClass, id);
 	}
 
-	public List<T> findAll() {
-		return getResultList(daoQueryService.buildFindAllQuery(entityManager, responseClass));
+	public List<T> findAll(int page, int pageSize, List<Filter> filters) {
+		CriteriaQuery<T> query = daoQueryService.buildFindAllQuery(entityManager, responseClass);
+		return getResultList(daoQueryService.extendFilters(entityManager, query, filters), page, pageSize);
 	}
 
-	public List<T> findAll(int page, int pageSize) {
-		return getResultList(daoQueryService.buildFindAllQuery(entityManager, responseClass), page, pageSize);
-	}
-
-	public long count() {
-		return getSingleResult(daoQueryService.buildCountQuery(entityManager, responseClass));
+	public long count(List<Filter> filters) {
+		CriteriaQuery<Long> query = daoQueryService.buildCountQuery(entityManager, responseClass);
+		return getSingleResult(daoQueryService.extendFilters(entityManager, query, filters));
 	}
 
 	private <S> List<S> getResultList(CriteriaQuery<S> query, int page, int pageSize) {

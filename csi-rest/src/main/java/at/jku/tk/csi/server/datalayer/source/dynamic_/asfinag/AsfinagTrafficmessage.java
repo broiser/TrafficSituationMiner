@@ -250,14 +250,13 @@ public class AsfinagTrafficmessage extends BaseEntity {
 	private String zoomurl;
 
 	@Column(name = "ImportDate", nullable = true)
-	@Temporal(TemporalType.TIMESTAMP)
-	private java.util.Date importDate;
+	private java.sql.Timestamp importDate;
 
-	public void setImportDate(java.util.Date value) {
+	public void setImportDate(java.sql.Timestamp value) {
 		this.importDate = value;
 	}
 
-	public java.util.Date getImportDate() {
+	public java.sql.Timestamp getImportDate() {
 		return importDate;
 	}
 

@@ -1,6 +1,7 @@
 import {SortByPipe} from '../pipe/sortByPipe';
 import {Component, OnInit, Input} from '@angular/core';
 import {isNullOrUndefined} from 'util';
+import * as Dracula from 'graphdracula/dist/dracula.min.js';
 
 declare var require: any;
 
@@ -24,18 +25,23 @@ export class StateInstanceGraphComponent implements OnInit {
 
     const graph = new Graph();
 
-    let previous: any;
-    this.sortByPipe.transform(this.stateInstances, 'beginTime').forEach(function(stateInstance) {
-      graph.addNode(stateInstance.id + '-' + stateInstance.name);
-      if (!isNullOrUndefined(previous)) {
-        graph.addEdge(previous.id + '-' + previous.name, stateInstance.id + '-' + stateInstance.name);
-      }
-      previous = stateInstance;
-    });
+    const sortedStateInstances = this.sortByPipe.transform(this.stateInstances, 'beginTime');
 
-    const layout = new Layout(graph)
+    let index = sortedStateInstances.length - 1;
+    for (; index >= 0; index--) {
+      const currentInstanceName = this.determineStateInstanceName(sortedStateInstances[index]);
+      graph.addNode(currentInstanceName);
+      if (index < (sortedStateInstances.length - 1)) {
+        graph.addEdge(this.determineStateInstanceName(sortedStateInstances[index + 1]), currentInstanceName);
+      }
+    }
+    const layout = new Layout(graph);
     const renderer = new Renderer('#canvas', graph, 1000, 150);
     renderer.draw()
+  }
+
+  private determineStateInstanceName(stateInstance: any): string {
+    return stateInstance.id + '-' + stateInstance.name;
   }
 
 }

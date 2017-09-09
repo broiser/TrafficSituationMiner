@@ -28,6 +28,8 @@ import {GeometryService} from './service/geometry.service';
 import {StateInstanceMapComponent} from './state-instance-map/state-instance-map.component';
 import {StateInstanceGraphComponent} from './state-instance-graph/state-instance-graph.component';
 import {StateInstanceListComponent} from './state-instance-list/state-instance-list.component';
+import { SituationEvolutionFilterComponent } from './situation-evolution-filter/situation-evolution-filter.component';
+import { EvolvingObjectFilterComponent } from './evolving-object-filter/evolving-object-filter.component';
 
 const appRoutes: Routes = [
   {path: 'trafficType', component: TrafficTypeListComponent},
@@ -52,7 +54,9 @@ const appRoutes: Routes = [
     AsfinageTrafficmessageListComponent,
     StateInstanceListComponent,
     StateInstanceGraphComponent,
-    StateInstanceMapComponent
+    StateInstanceMapComponent,
+    SituationEvolutionFilterComponent,
+    EvolvingObjectFilterComponent
   ],
   imports: [
     FormsModule,

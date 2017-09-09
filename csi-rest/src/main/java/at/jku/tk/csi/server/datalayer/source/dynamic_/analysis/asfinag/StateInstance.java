@@ -22,8 +22,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import at.jku.tk.csi.entity.BaseEntity;
 import at.jku.tk.csi.server.datalayer.source.dynamic_.asfinag.AsfinagTrafficmessage;
@@ -52,8 +50,7 @@ public class StateInstance extends BaseEntity {
 	private SituationStateType situationStateType;
 
 	@Column(name = "BeginTime", nullable = true)
-	@Temporal(TemporalType.TIMESTAMP)
-	private java.util.Date beginTime;
+	private java.sql.Timestamp beginTime;
 
 	@Column(name = "Duration", nullable = false)
 	private double duration;
@@ -77,11 +74,11 @@ public class StateInstance extends BaseEntity {
 			org.hibernate.annotations.CascadeType.LOCK })
 	private Transition nextStateInstanceTransition;
 
-	public void setBeginTime(java.util.Date value) {
+	public void setBeginTime(java.sql.Timestamp value) {
 		this.beginTime = value;
 	}
 
-	public java.util.Date getBeginTime() {
+	public java.sql.Timestamp getBeginTime() {
 		return beginTime;
 	}
 

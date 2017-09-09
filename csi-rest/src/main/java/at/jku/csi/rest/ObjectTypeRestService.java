@@ -48,7 +48,7 @@ public class ObjectTypeRestService implements RestService {
 	}
 
 	@GET
-	@Path("{fromDate}/{toDate}")
+	@Path("/build/{fromDate}/{toDate}")
 	public Response getObjectTypes(@PathParam("fromDate") String fromDate, @PathParam("toDate") String toDate)
 			throws Exception {
 		Date from = dateMarshaller.unmarshal(fromDate);

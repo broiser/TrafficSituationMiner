@@ -3,7 +3,6 @@ package at.jku.csi.service.dto;
 import static java.util.stream.Collectors.toSet;
 
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -41,11 +40,7 @@ public class AsfinagTrafficmessageDTOConverter implements Function<AsfinagTraffi
 		return target;
 	}
 
-	private Long toMillis(Date date) {
-		return date == null ? 0 : date.getTime();
-	}
-
 	private Long toMillis(Timestamp time) {
-		return time == null ? 0 : time.getTime();
+		return time == null ? null : time.getTime();
 	}
 }

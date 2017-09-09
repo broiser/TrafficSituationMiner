@@ -1,3 +1,4 @@
+import {Filter} from '../model/filter';
 import {PageResult} from '../model/page-result';
 import {SituationEvolutionService} from '../service/situation-evolution.service';
 import {Component, OnInit} from '@angular/core';
@@ -8,6 +9,7 @@ import {Component, OnInit} from '@angular/core';
 export class SituationEvolutionListComponent implements OnInit {
   public page = 1;
   public pageSize = 25;
+  public pageFilters: Filter[] = [];
   public count: number;
 
   public situationEvolutions: any[];
@@ -21,9 +23,15 @@ export class SituationEvolutionListComponent implements OnInit {
     this.onSituationEvolutionsLoading(this.page);
   }
 
+  public onFiltersChanged(pageFilters: Filter[]): void {
+    this.pageFilters = pageFilters;
+    this.onSituationEvolutionsLoading(1);
+  }
+
   public onSituationEvolutionsLoading(page: number): void {
     this.loadingImageVisible = true;
-    this.situationEvolutionService.getSituationEvolutions(page, this.pageSize).subscribe(this.onSituationEvolutionsLoaded.bind(this));
+    this.situationEvolutionService.getSituationEvolutions(page, this.pageSize, this.pageFilters)
+      .subscribe(this.onSituationEvolutionsLoaded.bind(this));
   }
 
   private onSituationEvolutionsLoaded(pageResult: PageResult): void {

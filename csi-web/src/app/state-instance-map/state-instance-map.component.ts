@@ -1,9 +1,8 @@
 import {GeometryService} from '../service/geometry.service';
 import {Component, OnInit, Input} from '@angular/core';
 import {isNullOrUndefined} from 'util';
-
-declare var L: any;
-declare var $: any;
+import * as $ from 'jquery/dist/jquery.min.js';
+import * as L from 'leaflet/dist/leaflet.js';
 
 @Component({
   selector: 'app-state-instance-map',
@@ -23,18 +22,16 @@ export class StateInstanceMapComponent implements OnInit {
   }
 
   private onSituationEvolutionGeometryLoaded(geojsonFeature: any) {
-    console.dir(geojsonFeature);
-    const viewPoint = geojsonFeature.geometry.coordinates[0][0];
-    if (isNullOrUndefined(viewPoint)) {
-      $('#map').html('Error, no Route available.');
+    if (isNullOrUndefined(geojsonFeature.geometry.coordinates[0][0])) {
       $('#map').height('10px');
+      $('#map').html('Error, no routes are available.');
     } else {
       const map = L.map('map');
-      L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      const titleLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       }).addTo(map);
-      const layer = L.geoJSON().addTo(map).addData(geojsonFeature);
-      map.fitBounds(layer.getBounds());
+      const geoJsonlayer = L.geoJSON().addTo(map).addData(geojsonFeature);
+      map.fitBounds(geoJsonlayer.getBounds());
     }
   }
 }

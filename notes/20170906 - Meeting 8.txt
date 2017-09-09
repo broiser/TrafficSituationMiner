@@ -1,0 +1,24 @@
+endtime nicht gesetzt = null in UI
+
+doku:
+- einleitung (Thema erklären)
+- archtekturbeschreibung
+	- Client Server
+	- grob Komponenten
+- technologien
+	- kurze Beschreibung + wie man die Server, NPM startet.
+	- implementierung, wie startet die Services damit die Daten generiert werden
+- class strukturen
+	- diagramm von visual
+- analyseergebnisse (screenshot)
+	- Zeitraum vom 1.1.2015 30.4.2015
+	- wie viele sitatuionStateType gibt es?
+	- wie viele situationEvolutionType gibt es?
+		- names, ...
+	- list der gefunden situationEvolutionType, Top (10) Ergebnisse
+	- welche RelationType sind gefunden worden?
+	- wie viele spatialEvolutions gibt es (größer 2)
+	- max evolutions stepts 
+	- durschnittliche Duration von SitutionEvolution
+	- Karten von interessanten SituationEvolutions
+	

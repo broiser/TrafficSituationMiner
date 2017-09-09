@@ -3,7 +3,6 @@ package at.jku.csi.service;
 import static java.text.MessageFormat.format;
 import static java.util.stream.Collectors.joining;
 
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 
@@ -11,12 +10,13 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 import at.jku.csi.cdi.Service;
+import at.jku.csi.dao.AbstractDao;
 import at.jku.csi.dao.EvolvingObjectDao;
 import at.jku.tk.csi.server.datalayer.source.dynamic_.analysis.asfinag.EvolvingObject;
 import at.jku.tk.csi.server.datalayer.source.dynamic_.asfinag.AsfinagTrafficmessage;
 
 @Service
-public class EvolvingObjectService implements Serializable {
+public class EvolvingObjectService extends AbstractService<EvolvingObject> {
 
 	private static final String EVO_SYMBOL = " -> ";
 	private static final String SOURCE_SYMBOL = ";";
@@ -25,22 +25,6 @@ public class EvolvingObjectService implements Serializable {
 	private EvolvingObjectDao evolvingObjectDao;
 	@Inject
 	private DurationCalculator durationCalculator;
-
-	public long count() {
-		return evolvingObjectDao.count();
-	}
-
-	public EvolvingObject findById(int id) {
-		return evolvingObjectDao.findById(id);
-	}
-
-	public List<EvolvingObject> findAll() {
-		return evolvingObjectDao.findAll();
-	}
-	
-	public List<EvolvingObject> findAll(int page, int pageSize){
-		return evolvingObjectDao.findAll(page, pageSize);
-	}
 
 	@Transactional
 	public EvolvingObject createEvolvingObject(List<AsfinagTrafficmessage> trafficmessages) {
@@ -119,5 +103,10 @@ public class EvolvingObjectService implements Serializable {
 
 	private boolean isSpatialEvolution(int meter1, int meter2) {
 		return !(meter1 == -1 || meter2 == -1) && (meter1 != meter2);
+	}
+
+	@Override
+	protected AbstractDao<EvolvingObject> getDao() {
+		return evolvingObjectDao;
 	}
 }
