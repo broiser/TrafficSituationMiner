@@ -1,0 +1,45 @@
+<div>
+	<table class="table table-condensed table-striped">
+		<thead>
+			<tr>
+				<th [colSpan]="2">
+					<button class="btn custom-button-width .navbar-right"
+						(click)="addFilter()">
+						<span class="glyphicon glyphicon-plus"></span>
+					</button>
+				</th>
+				<th [colSpan]="2">
+					<button class="btn btn-success pull-right" (click)="search()">Search</button>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			<ng-template [ngIf]="filters && filters.length > 0">
+			<tr *ngFor="let filter of filters; let i = index">
+				<td>
+					<button class="btn" (click)="removeFilter(i)">
+						<span class="glyphicon glyphicon-minus"></span>
+					</button>
+				</td>
+				<td>
+					<select class="form-control" [(ngModel)]="filter.field"
+						(change)="updateFilterType(i)">
+						<option *ngFor="let field of field2FilterType.keys()"
+							[ngValue]="field">{{field}}</option>
+					</select>
+				</td>
+				<td>
+					<select class="form-control" [(ngModel)]="filter.type">
+						<option *ngFor="let type of field2FilterType.get(filter.field)"
+							[ngValue]="type">{{determineFilterType(type)}}</option>
+					</select>
+				</td>
+				<td>
+					<input class="form-control" [(ngModel)]="filter.value" />
+				</td>
+
+			</tr>
+			</ng-template>
+		</tbody>
+	</table>
+</div>
